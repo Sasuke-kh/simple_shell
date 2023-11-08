@@ -8,6 +8,7 @@ int sh_non_interactive(char **env);
 int sh_interactive(char **env);
 int get_command(char **av, int *ac);
 int free_av_memory(char **av, int ac);
+int fork_and_execve(char **av, char **env);
 
 int main(int argc, char **argv, char **env)
 {
@@ -45,16 +46,14 @@ int sh_interactive(char **env)
 	char **av = NULL;
 	int i = 0;
 	av = (char **)malloc(10 * sizeof(char *));
-	while (status--)
+	while (status)
 	{
 		printf("($) ");
 		get_command(av, &ac);
 		if(status == -2)
 			continue;
-		for (i = 0; i < ac; i++)
-			printf("command[%d] = %s\n", i, av[i]);
-			printf("ac = %d\n", ac);
-		 free_av_memory(av, ac);
+		fork_and_execve(av, env);	
+		free_av_memory(av, ac);
 	}
 	free(av);
 }
@@ -72,20 +71,17 @@ int get_command(char **av, int *ac)
 	size = getline(&line, &n, stdin);
 	if (size == -1)
 		return (-2);
-	printf("size = %ld\n", size);
-	printf("n = %lu\n", n);
 	if (line[size - 1] == '\n')
 		line[size - 1] = '\0';
-	printf("command  = %s\n", line);
 
 	token = strtok(line, " ");
 	while (token != NULL)
 	{
-		printf(" %s\n", token);
 		av[i] = strdup(token);
 		token = strtok(NULL, " ");
 		i++;
 	}
+	av[i++] = NULL;	
 	*ac = i;
 	free(line);
 	free(token);
@@ -98,7 +94,43 @@ int free_av_memory(char **av, int ac)
 
 	for (i = 0; i < ac; i++)
 	{
-		printf("freeing [%d] = %s\n", i, av[i]);
 		free(av[i]);
 	}
+}
+
+
+int fork_and_execve(char **av, char **env)
+{
+	pid_t pid;
+	int status = 0;
+	
+	pid = fork();
+	if (pid == -1)
+		return -1;
+	
+	if(pid == 0)
+	{
+		if(execve(av[0], av, env) == -1)
+		{
+			perror("Error!!\n");
+			return -1;
+		}
+	}
+	else
+	{
+		if (waitpid(pid, &status, 0) != pid)
+		{
+			return -1;
+		}
+		else
+		{
+			if (WIFEXITED(status) != 1)
+			{
+				printf("status of child process = %d\n", WEXITSTATUS(status));
+				return -1;
+			}
+		}
+
+	}
+	return 0;
 }
