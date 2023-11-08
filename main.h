@@ -11,6 +11,6 @@
 #include <sys/stat.h>
 #define BUFSIZE 1204
 
-char *_strtok(char *str, const char *delem);
+char *_strtok(char *str, const char *delim);
 
 #endif /* MAIN_H */
