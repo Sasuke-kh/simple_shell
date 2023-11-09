@@ -13,7 +13,8 @@ int free_av_memory(char **av, int ac);
 int fork_and_execve(char **av, char **env);
 int get_PATH(char **env);
 int is_found_and_excecutable(char **av);
-
+int is_alias(char **av);
+int is_built_in_commnad(char **av);
 
 int main(int argc, char **argv, char **env)
 {
@@ -59,11 +60,11 @@ int sh_interactive(char **env)
 		get_command(av, &ac);
 		if(status == -2)
 			continue;
+		is_alias(av);
 		get_PATH(env);
-	
 		if (!(is_found_and_excecutable(av)))
 			printf("command not found\n");
-		//is_built_in_commnad(av);
+		is_built_in_commnad(av);
 		fork_and_execve(av, env);	
 		free_av_memory(av, ac);
 	}
@@ -210,4 +211,18 @@ int is_found_and_excecutable(char **av)
 		i++;
 	}	
 	return (0);
+}
+
+int is_alias(char **av)
+{
+
+
+}
+
+
+int is_built_in_commnad(char **av)
+{
+
+
+
 }
