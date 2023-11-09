@@ -3,13 +3,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+char **paths = NULL;
+
 int sh_script(char **argv, char **env);
 int sh_non_interactive(char **env);
 int sh_interactive(char **env);
 int get_command(char **av, int *ac);
 int free_av_memory(char **av, int ac);
 int fork_and_execve(char **av, char **env);
-int is_found_and_excecutable(char **av, char **env);
+int get_PATH(char **env);
+int is_found_and_excecutable(char **av);
 
 
 int main(int argc, char **argv, char **env)
@@ -25,6 +28,8 @@ int main(int argc, char **argv, char **env)
 		else
 			sh_non_interactive(env);
 	}	
+
+	free(paths);
 	return (0);
 }
 
@@ -54,7 +59,10 @@ int sh_interactive(char **env)
 		get_command(av, &ac);
 		if(status == -2)
 			continue;
-		is_found_and_excecutable(av, env);
+		get_PATH(env);
+	
+		if (!(is_found_and_excecutable(av)))
+			printf("command not found\n");
 		//is_built_in_commnad(av);
 		fork_and_execve(av, env);	
 		free_av_memory(av, ac);
@@ -107,11 +115,11 @@ int fork_and_execve(char **av, char **env)
 {
 	pid_t pid;
 	int status = 0;
-	
+
 	pid = fork();
 	if (pid == -1)
 		return -1;
-	
+
 	if(pid == 0)
 	{
 		if(execve(av[0], av, env) == -1)
@@ -139,17 +147,67 @@ int fork_and_execve(char **av, char **env)
 	return 0;
 }
 
-int is_found_and_excecutable(char **av, char **env)
+int get_PATH(char **env)
 {	
 	int i = 0;
+	int j = 0;
 	int result = -1;
 	char *pathLine;
-	while(env[i] != NULL && result != 0)
+	char *copy_pathLine;
+	char *token;
+
+	if(paths == NULL)
 	{
-	 	result =  strncmp("PATH", env[i], 4);
-		i++;
+		paths = (char **)malloc(100 * sizeof(char *));
+
+		while(env[i] != NULL && result != 0)
+		{
+			result =  strncmp("PATH", env[i], 4);
+			i++;
+		}
+		pathLine = env[i-1];
+		copy_pathLine = strdup(pathLine);
+		token = strtok(copy_pathLine + 5, ":");
+		while (token != NULL)
+		{
+			paths[j] = strdup(token);
+			token = strtok(NULL, ":");
+			j++;
+		}
+
+		paths[j] = NULL;
+		free(token);
+		free(copy_pathLine);
+
 	}
-	pathLine = env[i-1];
-	
 	return (1);
+}
+int is_found_and_excecutable(char **av)
+{
+	int i = 0;
+	size_t n1, n2;
+	char *testFile;
+	//check current directory first
+	if (access(av[0], X_OK) == 0)
+	{
+		return (1);
+	}
+	
+	//check all directories in path
+	while(paths[i] != NULL)
+	{	
+		n1 = strlen(paths[i]);
+		n2 = strlen(av[0]);
+		testFile = (char *)malloc(n1 + n2 + 2);
+		strcpy(testFile, paths[i]);
+		strcat(testFile, "/");
+		strcat(testFile, av[0]);
+		if (access(testFile, X_OK) == 0)
+		{
+			av[0] = testFile;
+			return (1);
+		}
+		i++;
+	}	
+	return (0);
 }
