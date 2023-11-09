@@ -9,6 +9,8 @@ int sh_interactive(char **env);
 int get_command(char **av, int *ac);
 int free_av_memory(char **av, int ac);
 int fork_and_execve(char **av, char **env);
+int is_found_and_excecutable(char **av, char **env);
+
 
 int main(int argc, char **argv, char **env)
 {
@@ -52,6 +54,8 @@ int sh_interactive(char **env)
 		get_command(av, &ac);
 		if(status == -2)
 			continue;
+		is_found_and_excecutable(av, env);
+		//is_built_in_commnad(av);
 		fork_and_execve(av, env);	
 		free_av_memory(av, ac);
 	}
@@ -133,4 +137,19 @@ int fork_and_execve(char **av, char **env)
 
 	}
 	return 0;
+}
+
+int is_found_and_excecutable(char **av, char **env)
+{	
+	int i = 0;
+	int result = -1;
+	char *pathLine;
+	while(env[i] != NULL && result != 0)
+	{
+	 	result =  strncmp("PATH", env[i], 4);
+		i++;
+	}
+	pathLine = env[i-1];
+	
+	return (1);
 }
