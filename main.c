@@ -2,22 +2,24 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-
-char **paths = NULL;
+#include "list.h"
+#include <sys/types.h>
+#include <sys/wait.h>
 
 int sh_script(char **argv, char **env);
 int sh_non_interactive(char **env);
 int sh_interactive(char **env);
 int get_command(char **av, int *ac);
-int free_av_memory(char **av, int ac);
+void free_av_memory(char **av, int ac);
 int fork_and_execve(char **av, char **env);
-int get_PATH(char **env);
-int is_found_and_excecutable(char **av);
+int get_PATH(char **env, list_t **paths_head);
+int is_found_and_excecutable(char **av, list_t *paths_head);
 int is_alias(char **av);
 int is_built_in_commnad(char **av);
 
 int main(int argc, char **argv, char **env)
 {
+	
 	if (argc > 1)
 	{
 		sh_script(argv, env);
@@ -30,45 +32,58 @@ int main(int argc, char **argv, char **env)
 			sh_non_interactive(env);
 	}	
 
-	free(paths);
 	return (0);
 }
 
 int sh_script(char **argv, char **env)
 {
-
+	return (0);
 }
 
 int sh_non_interactive(char **env)
 {
-
-
+	return (0);
 }
 int sh_interactive(char **env)
 {	
-	char *line;
-	ssize_t size;
-	size_t n;
 	int status = 1;
 	int ac;
 	char **av = NULL;
-	int i = 0;
-	av = (char **)malloc(10 * sizeof(char *));
+	list_t *paths_head = NULL;
+	
+	av = (char **)malloc(100 * sizeof(char *));  /*Would it be a problem ? is 100 enough ?*/
 	while (status)
 	{
 		printf("($) ");
-		get_command(av, &ac);
-		if(status == -2)
+		if(get_command(av, &ac))
+		{
+			printf("Error!! Can't get command\n");
+			continue;	
+		}
+		//is_alias(av);
+		
+		if(get_PATH(env, &paths_head))
+		{	
+			printf("Error!! Can't get path\n");
 			continue;
-		is_alias(av);
-		get_PATH(env);
-		if (!(is_found_and_excecutable(av)))
-			printf("command not found\n");
-		is_built_in_commnad(av);
-		fork_and_execve(av, env);	
+		}
+		if (is_found_and_excecutable(av, paths_head))
+		{
+			printf("Error!! Command not found\n");
+			continue;
+		}
+		//is_built_in_commnad(av);
+
+		if(fork_and_execve(av, env))
+		{
+			printf("Error!! Commmand can't get executed\n");
+			continue;
+		}
 		free_av_memory(av, ac);
 	}
 	free(av);
+	free_list(paths_head);
+	return (0);
 }
 
 int get_command(char **av, int *ac)
@@ -79,15 +94,22 @@ int get_command(char **av, int *ac)
 	size_t n = 0;
 	char* token;
 	int i = 0;
+
 	line = (char *)malloc(100);
+	if (line == NULL)
+		return (-1);
 	copy_line = line;
 	size = getline(&line, &n, stdin);
 	if (size == -1)
+	{
+		free(copy_line);
 		return (-2);
+	}
 	if (line[size - 1] == '\n')
 		line[size - 1] = '\0';
 
 	token = strtok(line, " ");
+
 	while (token != NULL)
 	{
 		av[i] = strdup(token);
@@ -99,9 +121,10 @@ int get_command(char **av, int *ac)
 	free(line);
 	free(token);
 	free(copy_line);
+	return (0);
 }
 
-int free_av_memory(char **av, int ac)
+void free_av_memory(char **av, int ac)
 {
 	int i = 0;
 
@@ -126,21 +149,21 @@ int fork_and_execve(char **av, char **env)
 		if(execve(av[0], av, env) == -1)
 		{
 			perror("Error!!\n");
-			return -1;
+			return -2;
 		}
 	}
 	else
 	{
 		if (waitpid(pid, &status, 0) != pid)
 		{
-			return -1;
+			return -3;
 		}
 		else
 		{
 			if (WIFEXITED(status) != 1)
 			{
 				printf("status of child process = %d\n", WEXITSTATUS(status));
-				return -1;
+				return -4;
 			}
 		}
 
@@ -148,7 +171,7 @@ int fork_and_execve(char **av, char **env)
 	return 0;
 }
 
-int get_PATH(char **env)
+int get_PATH(char **env, list_t **paths_head)
 {	
 	int i = 0;
 	int j = 0;
@@ -157,72 +180,72 @@ int get_PATH(char **env)
 	char *copy_pathLine;
 	char *token;
 
-	if(paths == NULL)
+	if(*paths_head == NULL)
 	{
-		paths = (char **)malloc(100 * sizeof(char *));
-
 		while(env[i] != NULL && result != 0)
 		{
 			result =  strncmp("PATH", env[i], 4);
 			i++;
 		}
+		if (result == -1)
+			return (-1);
 		pathLine = env[i-1];
 		copy_pathLine = strdup(pathLine);
 		token = strtok(copy_pathLine + 5, ":");
 		while (token != NULL)
 		{
-			paths[j] = strdup(token);
+			add_node_end(paths_head, token);
 			token = strtok(NULL, ":");
 			j++;
 		}
-
-		paths[j] = NULL;
 		free(token);
 		free(copy_pathLine);
-
 	}
-	return (1);
+	/*print_list(*paths_head);*/
+	return (0);
 }
-int is_found_and_excecutable(char **av)
+int is_found_and_excecutable(char **av, list_t *paths_head)
 {
-	int i = 0;
 	size_t n1, n2;
 	char *testFile;
+	list_t *trav_path = paths_head;
+
 	//check current directory first
 	if (access(av[0], X_OK) == 0)
 	{
-		return (1);
+		return (0);
 	}
 	
 	//check all directories in path
-	while(paths[i] != NULL)
+	while(trav_path != NULL)
 	{	
-		n1 = strlen(paths[i]);
+		n1 = trav_path->len;
 		n2 = strlen(av[0]);
 		testFile = (char *)malloc(n1 + n2 + 2);
-		strcpy(testFile, paths[i]);
+		if (testFile == NULL)
+			return (-2);
+		strcpy(testFile, trav_path->str);
 		strcat(testFile, "/");
 		strcat(testFile, av[0]);
 		if (access(testFile, X_OK) == 0)
 		{
 			av[0] = testFile;
-			return (1);
+			return (0);
 		}
-		i++;
+		trav_path = trav_path->next;
 	}	
-	return (0);
+	return (-1);
 }
 
 int is_alias(char **av)
 {
 
-
+;	return (0);
 }
 
 
 int is_built_in_commnad(char **av)
 {
-
-
-
+	
+	return (0);
 }
