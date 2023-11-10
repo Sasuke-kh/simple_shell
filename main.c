@@ -5,6 +5,7 @@
 #include "list.h"
 #include <sys/types.h>
 #include <sys/wait.h>
+#include "command.h"
 
 int sh_script(char **argv, char **env);
 int sh_non_interactive(char **env);
@@ -16,6 +17,8 @@ int get_PATH(char **env, list_t **paths_head);
 int is_found_and_excecutable(char **av, list_t *paths_head);
 int is_alias(char **av);
 int is_built_in_commnad(char **av);
+void cd(char **av);  /*Should be remvoed*/
+
 
 int main(int argc, char **argv, char **env)
 {
@@ -70,14 +73,19 @@ int sh_interactive(char **env)
 		if (is_found_and_excecutable(av, paths_head))
 		{
 			printf("Error!! Command not found\n");
+		}
+		else
+		{
+			if(fork_and_execve(av, env))
+			{
+				printf("Error!! Commmand can't get executed\n");
+			}
 			continue;
 		}
-		//is_built_in_commnad(av);
 
-		if(fork_and_execve(av, env))
+		if(is_built_in_commnad(av))
 		{
-			printf("Error!! Commmand can't get executed\n");
-			continue;
+			printf("IS NOT A BUILT IN COMMAND\n");
 		}
 		free_av_memory(av, ac);
 	}
@@ -246,6 +254,25 @@ int is_alias(char **av)
 
 int is_built_in_commnad(char **av)
 {
-	
-	return (0);
+	command_t commands[NO_COMMANDS] = {{"cd" , cd}};
+	int i = 0;
+	int result = -1;
+
+	while (i < NO_COMMANDS)
+	{
+		result =  strcmp(av[0], commands[i].command);
+		if (result == 0)
+		{	
+			commands[i].function(av);
+			return (0);
+		}
+		i++;
+	}
+	return (-1);
+}
+
+void cd(char **av)
+{
+	printf("Executing cd\n");
+
 }
