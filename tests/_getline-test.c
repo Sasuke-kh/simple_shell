@@ -1,5 +1,5 @@
 #include "../main.h"
-
+#include "../strings.h"
 
 int main()
 {
@@ -7,7 +7,8 @@ int main()
 	size_t len = 0;
 	ssize_t read;
 
-	putchar('$');
+	_putchar('$');
+	_putchar(' ');
 	read = _getline(&line, &len, stdin);
 	if (read != -1)
 		printf("You entered: %s\n", line);
