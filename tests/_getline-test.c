@@ -7,7 +7,7 @@ int main()
 	size_t len = 0;
 	ssize_t read;
 
-	printf("$ ");
+	putchar('$');
 	read = _getline(&line, &len, stdin);
 	if (read != -1)
 		printf("You entered: %s\n", line);
