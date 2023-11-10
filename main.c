@@ -6,6 +6,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include "command.h"
+#include "main.h"
+#include "strings.h"
 
 int sh_script(char **argv, char **env);
 int sh_non_interactive(char **env);
@@ -58,6 +60,7 @@ int sh_interactive(char **env)
 	while (status)
 	{
 		printf("($) ");
+		fflush(stdout);
 		if(get_command(av, &ac))
 		{
 			printf("Error!! Can't get command\n");
@@ -107,7 +110,7 @@ int get_command(char **av, int *ac)
 	if (line == NULL)
 		return (-1);
 	copy_line = line;
-	size = getline(&line, &n, stdin);
+	size = _getline(&line, &n, stdin);
 	if (size == -1)
 	{
 		free(copy_line);
@@ -116,12 +119,12 @@ int get_command(char **av, int *ac)
 	if (line[size - 1] == '\n')
 		line[size - 1] = '\0';
 
-	token = strtok(line, " ");
+	token = _strtok(line, " ");
 
 	while (token != NULL)
 	{
-		av[i] = strdup(token);
-		token = strtok(NULL, " ");
+		av[i] = _strdup(token);
+		token = _strtok(NULL, " ");
 		i++;
 	}
 	av[i++] = NULL;	
@@ -192,18 +195,18 @@ int get_PATH(char **env, list_t **paths_head)
 	{
 		while(env[i] != NULL && result != 0)
 		{
-			result =  strncmp("PATH", env[i], 4);
+			result =  _strncmp("PATH", env[i], 4);
 			i++;
 		}
 		if (result == -1)
 			return (-1);
 		pathLine = env[i-1];
-		copy_pathLine = strdup(pathLine);
-		token = strtok(copy_pathLine + 5, ":");
+		copy_pathLine = _strdup(pathLine);
+		token = _strtok(copy_pathLine + 5, ":");
 		while (token != NULL)
 		{
 			add_node_end(paths_head, token);
-			token = strtok(NULL, ":");
+			token = _strtok(NULL, ":");
 			j++;
 		}
 		free(token);
@@ -228,7 +231,7 @@ int is_found_and_excecutable(char **av, list_t *paths_head)
 	while(trav_path != NULL)
 	{	
 		n1 = trav_path->len;
-		n2 = strlen(av[0]);
+		n2 = _strlen(av[0]);
 		testFile = (char *)malloc(n1 + n2 + 2);
 		if (testFile == NULL)
 			return (-2);
