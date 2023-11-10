@@ -1,4 +1,4 @@
-#include "lists.h"
+#include "list.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -57,7 +57,7 @@ list_t *add_node(list_t **head, const char *str)
 		free(new_node);
 		return (NULL);
 	}
-	len = string_length(new_string);
+	len = strlen(new_string);
 	new_node->str = new_string;
 	new_node->len = len;
 	new_node->next = *head;
@@ -88,7 +88,7 @@ list_t *add_node_end(list_t **head, const char *str)
 		free(new_node);
 		return (NULL);
 	}
-	len = string_length(new_string);
+	len = strlen(new_string);
 	new_node->str = new_string;
 	new_node->len = len;
 	new_node->next = NULL;
@@ -106,20 +106,7 @@ list_t *add_node_end(list_t **head, const char *str)
 	return (new_node);
 }
 
-/**
- * string_length - calculate length of string
- * @str: pointer to char string
- *
- * Return: string length
- */
-unsigned int string_length(char *str)
-{
-	unsigned int i = 0;
 
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
 /**
 * free_list - frees memory ocuupied by single linked list
 * @head: pointer to head node of linked list
