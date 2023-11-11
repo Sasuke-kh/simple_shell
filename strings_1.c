@@ -69,8 +69,8 @@ char *_strcat(char *dest, char *src)
 		x++;
 
 	for (x2 = 0; src[x2] ; x2++)
-
 		dest[x++] = src[x2];
 
+	dest[x] = '\0';
 	return (dest);
 }
