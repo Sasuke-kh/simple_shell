@@ -20,7 +20,7 @@ int is_found_and_excecutable(char **av, list_t *paths_head);
 int is_alias(char **av);
 int is_built_in_commnad(char **av);
 void cd(char **av);  /*Should be remvoed*/
-
+int get_command_from_file(int fd, char **av, int *ac);
 
 int main(int argc, char **argv, char **env)
 {
@@ -46,6 +46,61 @@ int main(int argc, char **argv, char **env)
 
 int sh_script(char **argv, char **env)
 {
+	printf("Script\n");
+	int ac;
+	char **av = NULL;
+	list_t *paths_head = NULL;
+	int c_s = 0;
+	int done = 0;
+	int fd;
+
+	fd  = open(argv[1], O_RDONLY);
+	if (fd < 0)
+	{	
+		printf("Can't open %s\n", argv[1]);
+		return (-4);
+	}
+
+	av = (char **)malloc(100 * sizeof(char *));  /*Would it be a problem ? is 100 enough ?*/
+
+	while(!(get_command_from_file(fd, av, &ac)))
+	{
+		if(get_PATH(env, &paths_head))
+		{	
+			printf("Error!! Can't get path\n");
+		}
+		else
+		{
+			if (is_found_and_excecutable(av, paths_head))
+			{
+				printf("Error!! Command not found\n");
+			}
+			else
+			{
+				if(fork_and_execve(av, env))
+				{
+					printf("Error!! Commmand can't get executed\n");
+				}
+				else
+				{
+					done = 1;
+				}
+			}
+			if(!done)
+			{
+				if(is_built_in_commnad(av))
+				{
+					printf("IS NOT A BUILT IN COMMAND\n");
+					printf("hsh : not found\n");
+				}
+			}
+		}
+		free_av_memory(av, ac);
+	}
+	free(av);
+	free_list(paths_head);
+
+	
 	return (0);
 }
 
@@ -177,6 +232,49 @@ int get_command(char **av, int *ac)
 		return (-1);
 	copy_line = line;
 	size = _getline(&line, &n, STDIN_FILENO);
+	printf("line = %s\n", line);
+	printf("line starts with %x and size %d \n", *line, size);
+	if (size == -2)
+	{
+		free(copy_line);
+		return (-2);
+	}
+	if (line[size - 1] == '\n')
+		line[size - 1] = '\0';
+
+	token = _strtok(line, " ");
+	//check if first token is alias replace it with equivelant
+
+	while (token != NULL)
+	{
+		av[i] = _strdup(token);
+		printf("token %s\n", av[i]);
+		token = _strtok(NULL, " ");
+		i++;
+	}
+	av[i++] = NULL;	
+	*ac = i;
+	free(line);
+	free(token);
+	free(copy_line);
+	return (0);
+}
+
+
+int get_command_from_file(int fd, char **av, int *ac)
+{
+	char *line;
+	char *copy_line;
+	ssize_t size;
+	size_t n = 0;
+	char* token;
+	int i = 0;
+
+	line = (char *)malloc(100);
+	if (line == NULL)
+		return (-1);
+	copy_line = line;
+	size = _getline(&line, &n, fd);
 	printf("line = %s\n", line);
 	printf("line starts with %x and size %d \n", *line, size);
 	if (size == -2)
