@@ -103,10 +103,11 @@ int sh_non_interactive(char **env)
 	int done = 0;
 
 	av = (char **)malloc(100 * sizeof(char *));  /*Is 100 enough?*/
+	if (av == NULL)
+		return (-1);
 	c_s = get_command(av, &ac);
 	if (c_s == -1)
 	{
-		printf("Error!! Can't get command\n");
 	}
 	else if (c_s == -2)		/* EOF */
 	{
@@ -122,7 +123,7 @@ int sh_non_interactive(char **env)
 		{
 			if (is_found_and_excecutable(av, paths_head))
 			{
-				printf("Error!! Command not found\n");
+			
 			}
 			else
 			{
@@ -132,14 +133,13 @@ int sh_non_interactive(char **env)
 				}
 				else
 				{
-					done = 1;
 				}
+				done = 1;
 			}
 			if (!done)
 			{
 				if (is_built_in_commnad(av))
 				{
-					printf("IS NOT A BUILT IN COMMAND\n");
 					printf("hsh : not found\n");
 				}
 			}

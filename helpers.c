@@ -42,7 +42,6 @@ int get_command(char **av, int *ac)
 	*ac = i;
 	free(line);
 	free(token);
-//	free(copy_line);
 	return (0);
 }
 
