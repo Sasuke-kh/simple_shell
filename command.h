@@ -11,8 +11,9 @@ typedef struct{
 	command_func function;
 }command_t;
 
+int is_built_in_commnad(char **av);
 
-
-
+/* Declaration of built in commands*/
+void cd(char **av);
 #endif 
 

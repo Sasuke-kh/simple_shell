@@ -25,7 +25,7 @@ int _strcmp(char *s1, char *s2)
 }
 
 
-int _strncmp(char *s1, char *s2, size_t n)
+int _strncmp(char *s1, char *s2, int n)
 {
     int idx = 0;
     int result = 0;

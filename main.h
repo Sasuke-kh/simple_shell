@@ -14,6 +14,4 @@
 
 int _fgetc(int fd);
 ssize_t _getline(char **lineptr, size_t *n, int fd);
-char *_strtok(char *str, const char *delim);
-
 #endif /* MAIN_H */
