@@ -34,7 +34,6 @@ int get_command(char **av, int *ac)
 	while (token != NULL)
 	{
 		av[i] = _strdup(token);
-		printf("token %s\n", av[i]);
 		token = _strtok(NULL, " ");
 		i++;
 	}

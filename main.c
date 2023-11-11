@@ -170,6 +170,7 @@ int sh_interactive(char **env)
 		}
 		else if (c_s == -2)			/* EOF */
 		{
+			printf("\n");
 			break;
 		}
 
@@ -180,7 +181,6 @@ int sh_interactive(char **env)
 		}
 		if (is_found_and_excecutable(av, paths_head))
 		{
-			printf("Error!! Command not found\n");
 		}
 		else
 		{
@@ -193,7 +193,6 @@ int sh_interactive(char **env)
 
 		if (is_built_in_commnad(av))
 		{
-			printf("IS NOT A BUILT IN COMMAND\n");
 			printf("hsh : not found\n");
 		}
 		free_av_memory(av, ac);
