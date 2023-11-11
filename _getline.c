@@ -43,7 +43,9 @@ ssize_t _getline(char **lineptr, size_t *n, int fd)
 		(*lineptr)[i++] = c;
 	}
 	if (c == EOF && i == 0)
+	{
 		return (-2); /*no characters read, and EOF reched*/
+	}
 	(*lineptr)[i] = '\0';
 	return (i); /*number of characters read*/
 }

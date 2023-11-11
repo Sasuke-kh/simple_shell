@@ -53,6 +53,8 @@ int sh_script(char **argv, char **env)
 	}
 
 	av = (char **)malloc(100 * sizeof(char *));  /*Is 100 enough ? */
+	if (av == NULL)
+		return (-1);
 
 	while (!(get_command_from_file(fd, av, &ac)))
 	{
@@ -61,27 +63,26 @@ int sh_script(char **argv, char **env)
 			printf("Error!! Can't get path\n");
 		}
 		else
-		{
+		{	
 			if (is_found_and_excecutable(av, paths_head))
 			{
-				printf("Error!! Command not found\n");
+				/*printf("XXXXXXXXError!! Command not found\n");*/
 			}
 			else
 			{
+				done = 1;
 				if (fork_and_execve(av, env))
 				{
 					printf("Error!! Commmand can't get executed\n");
 				}
 				else
 				{
-					done = 1;
 				}
 			}
 			if (!done)
 			{
 				if (is_built_in_commnad(av))
 				{
-					printf("IS NOT A BUILT IN COMMAND\n");
 					printf("hsh : not found\n");
 				}
 			}
@@ -158,6 +159,8 @@ int sh_interactive(char **env)
 	int c_s = 0;
 
 	av = (char **)malloc(100 * sizeof(char *));  /*Is 100 enough ?*/
+	if (av == NULL)
+		return (-1);
 	while (status)
 	{
 		printf("($) ");
@@ -177,7 +180,7 @@ int sh_interactive(char **env)
 		if (get_PATH(env, &paths_head))
 		{
 			printf("Error!! Can't get path\n");
-			continue;
+			break;
 		}
 		if (is_found_and_excecutable(av, paths_head))
 		{
@@ -188,6 +191,7 @@ int sh_interactive(char **env)
 			{
 				printf("Error!! Commmand can't get executed\n");
 			}
+			free_av_memory(av, ac);
 			continue;
 		}
 
@@ -206,7 +210,6 @@ int sh_interactive(char **env)
 void free_av_memory(char **av, int ac)
 {
 	int i = 0;
-
 	for (i = 0; i < ac; i++)
 	{
 		free(av[i]);

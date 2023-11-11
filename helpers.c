@@ -6,6 +6,7 @@
 #include "strings.h"
 #include <sys/wait.h>
 #include "main.h"
+#include <string.h>
 int get_command(char **av, int *ac)
 {
 	char *line;
@@ -37,11 +38,11 @@ int get_command(char **av, int *ac)
 		token = _strtok(NULL, " ");
 		i++;
 	}
-	av[i++] = NULL;	
+	av[i] = NULL;	
 	*ac = i;
 	free(line);
 	free(token);
-	free(copy_line);
+//	free(copy_line);
 	return (0);
 }
 
@@ -51,7 +52,7 @@ int get_command_from_file(int fd, char **av, int *ac)
 	char *line;
 	char *copy_line;
 	ssize_t size;
-	size_t n = 0;
+	size_t n = 100;
 	char* token;
 	int i = 0;
 
@@ -77,11 +78,10 @@ int get_command_from_file(int fd, char **av, int *ac)
 		token = _strtok(NULL, " ");
 		i++;
 	}
-	av[i++] = NULL;	
+	av[i] = NULL;
 	*ac = i;
 	free(line);
 	free(token);
-	free(copy_line);
 	return (0);
 }
 
@@ -179,10 +179,12 @@ int is_found_and_excecutable(char **av, list_t *paths_head)
 		_strcat(testFile, av[0]);
 		if (access(testFile, X_OK) == 0)
 		{
+			free(av[0]);
 			av[0] = testFile;
 			return (0);
 		}
 		trav_path = trav_path->next;
+		free(testFile);
 	}	
 	return (-1);
 }
