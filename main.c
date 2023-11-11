@@ -176,7 +176,7 @@ int get_command(char **av, int *ac)
 	if (line == NULL)
 		return (-1);
 	copy_line = line;
-	size = _getline(&line, &n, stdin);
+	size = _getline(&line, &n, STDIN_FILENO);
 	printf("line = %s\n", line);
 	printf("line starts with %x and size %d \n", *line, size);
 	if (size == -2)

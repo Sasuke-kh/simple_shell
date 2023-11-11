@@ -9,6 +9,7 @@ int main()
 
 	_putchar('$');
 	_putchar(' ');
+	
 	read = _getline(&line, &len, stdin);
 	if (read != -1)
 		printf("You entered: %s\n", line);
