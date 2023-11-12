@@ -2,7 +2,7 @@
 
 #define _COMMAND_H_
 
-#define NO_COMMANDS 1
+#define NO_COMMANDS 2
 
 typedef void (*command_func)(char **av);
 
@@ -15,5 +15,6 @@ int is_built_in_commnad(char **av);
 
 /* Declaration of built in commands*/
 void cd(char **av);
+void shell_exit(char **av);
 #endif 
 

@@ -3,7 +3,7 @@
 
 int is_built_in_commnad(char **av)
 {
-    command_t commands[NO_COMMANDS] = {{"cd" , cd}};
+    command_t commands[NO_COMMANDS] = {{"cd" , cd}, {"exit", exit}};
     int i = 0;
     int result = -1;
 
