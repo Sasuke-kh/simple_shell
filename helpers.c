@@ -51,7 +51,7 @@ int get_command_from_file(int fd, char **av, int *ac)
 	char *line;
 	char *copy_line;
 	ssize_t size;
-	size_t n = 100;
+	size_t n = 1;
 	char* token;
 	int i = 0;
 

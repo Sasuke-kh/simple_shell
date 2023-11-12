@@ -99,21 +99,13 @@ int sh_non_interactive(char **env)
 	int ac;
 	char **av = NULL;
 	list_t *paths_head = NULL;
-	int c_s = 0;
 	int done = 0;
 
 	av = (char **)malloc(100 * sizeof(char *));  /*Is 100 enough?*/
 	if (av == NULL)
 		return (-1);
-	c_s = get_command(av, &ac);
-	if (c_s == -1)
-	{
-	}
-	else if (c_s == -2)		/* EOF */
-	{
 
-	}
-	else
+	while (!(get_command_from_file(0, av, &ac)))
 	{
 		if (get_PATH(env, &paths_head))
 		{
@@ -123,7 +115,7 @@ int sh_non_interactive(char **env)
 		{
 			if (is_found_and_excecutable(av, paths_head))
 			{
-			
+
 			}
 			else
 			{
@@ -145,6 +137,7 @@ int sh_non_interactive(char **env)
 			}
 		}
 		free_av_memory(av, ac);
+
 	}
 	free(av);
 	free_list(paths_head);
