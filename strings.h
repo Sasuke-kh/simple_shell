@@ -10,5 +10,6 @@ int _putchar(char c);
 char *_strcat(char *dest, char *src);
 char *_strdup(char *str);
 int _strcmp(char *s1, char *s2);
-int _stnrcmp(char *s1, char *s2, size_t n);
+int _strncmp(char *s1, char *s2, int n);
+char *_strtok(char *str, const char *delim);
 #endif /* STRINGS_H */

@@ -6,7 +6,7 @@
  * Return: buffer or eof
  */
 
-int _fgetc(FILE *stream)
+int _fgetc(int fd)
 {
 	static char buffer[BUFSIZ];
 	static ssize_t buf_pos;
@@ -14,7 +14,7 @@ int _fgetc(FILE *stream)
 
 	if (buf_pos >= buf_size)
 	{
-		buf_size = read(fileno(stream), buffer, BUFSIZ);
+		buf_size = read(fd, buffer, BUFSIZ);
 		buf_pos = 0;
 		if (buf_size <= 0)
 			return (EOF);

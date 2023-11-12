@@ -8,7 +8,7 @@
  * Return: number of characters read or -1 on failure
  */
 
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
+ssize_t _getline(char **lineptr, size_t *n, int fd)
 {
 	size_t i;
 	int c;
@@ -26,7 +26,7 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 		}
 	}
 	i = 0;
-	while ((c = _fgetc(stream)) != EOF && c != '\n')
+	while ((c = _fgetc(fd)) != EOF && c != '\n')
 	{
 		if (i >= *n - 1)
 		{
@@ -43,7 +43,9 @@ ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 		(*lineptr)[i++] = c;
 	}
 	if (c == EOF && i == 0)
+	{
 		return (-2); /*no characters read, and EOF reched*/
+	}
 	(*lineptr)[i] = '\0';
 	return (i); /*number of characters read*/
 }
