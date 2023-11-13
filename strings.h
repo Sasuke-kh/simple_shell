@@ -12,4 +12,6 @@ char *_strdup(char *str);
 int _strcmp(char *s1, char *s2);
 int _strncmp(char *s1, char *s2, int n);
 char *_strtok(char *str, const char *delim);
+void print_str(char *str);
+void print_error(char *str);
 #endif /* STRINGS_H */
