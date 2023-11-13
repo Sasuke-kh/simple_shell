@@ -1,7 +1,7 @@
-#include "free_manager.h"
+#include "memory_manager.h"
 #include <stdlib.h>
 #include "listptr.h"
-
+#include <stdio.h>
 void free_manager(void *ptr)
 {
 	static listptr_t *headptr = NULL;
@@ -25,9 +25,9 @@ void free_av_memory(char **av, int ac)
 }
 
 void free_and_NULL(void **ptr)
-{
-	free(*ptr);
-	*ptr = NULL;
+{	
+//	free(*ptr);
+//	*ptr = 0xFF;
 }
 void *_malloc(size_t size)
 {

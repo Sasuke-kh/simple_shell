@@ -7,6 +7,7 @@
 #include <sys/wait.h>
 #include "main.h"
 #include <string.h>
+#include "memory_manager.h"
 int get_command(char **av, int *ac)
 {
 	char *line;
@@ -23,7 +24,7 @@ int get_command(char **av, int *ac)
 	size = _getline(&line, &n, STDIN_FILENO);
 	if (size == -2)
 	{
-		free(copy_line);
+		free_and_NULL(copy_line);
 		return (-2);
 	}
 	if (line[size - 1] == '\n')
@@ -40,7 +41,7 @@ int get_command(char **av, int *ac)
 	}
 	av[i] = NULL;	
 	*ac = i;
-	free(line);
+	free_and_NULL(&line);
 //	free(token);
 	return (0);
 }
@@ -62,7 +63,7 @@ int get_command_from_file(int fd, char **av, int *ac)
 	size = _getline(&line, &n, fd);
 	if (size == -2)
 	{
-		free(copy_line);
+		free_and_NULL(copy_line);
 		return (-2);
 	}
 	if (line[size - 1] == '\n')
@@ -79,7 +80,7 @@ int get_command_from_file(int fd, char **av, int *ac)
 	}
 	av[i] = NULL;
 	*ac = i;
-	free(line);
+	free_and_NULL(&line);
 //	free(token);
 	return (0);
 }
@@ -147,8 +148,8 @@ int get_PATH(char **env, list_t **paths_head)
 			token = _strtok(NULL, ":");
 			j++;
 		}
-		free(token);
-		free(copy_pathLine);
+		//free(token);
+		free_and_NULL(&copy_pathLine);
 	}
 	/*print_list(*paths_head);*/
 	return (0);
@@ -178,12 +179,12 @@ int is_found_and_excecutable(char **av, list_t *paths_head)
 		_strcat(testFile, av[0]);
 		if (access(testFile, X_OK) == 0)
 		{
-			free(av[0]);
+			free_and_NULL(&(av[0]));
 			av[0] = testFile;
 			return (0);
 		}
 		trav_path = trav_path->next;
-		free(testFile);
+		free_and_NULL(&testFile);
 	}	
 	return (-1);
 }

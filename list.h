@@ -1,6 +1,7 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 #include <stddef.h>
+#include "memory_manager.h"
 /**
  * struct list_s - singly linked list
  * @str: string - (malloc'ed string)

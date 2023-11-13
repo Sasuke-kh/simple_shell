@@ -9,15 +9,26 @@
 #include "main.h"
 #include "strings.h"
 #include "helpers.h"
-#include "free_manager.h"
+#include "memory_manager.h"
+#include <signal.h>
+
+typedef void (*sighandler_t)(int);
+
 int sh_script(char **argv, char **env);
 int sh_non_interactive(char **env);
 int sh_interactive(char **env);
 void free_av_memory(char **av, int ac);
-
+	
+void exit_handler(int i)
+{
+	free_manager(NULL);
+	exit(0);
+}
 int main(int argc, char **argv, char **env)
 {
-
+	sighandler_t sig = signal(SIGINT, exit_handler);
+	if (sig == SIG_ERR)
+		printf("ERROR\n");
 	if (argc > 1)
 	{
 		sh_script(argv, env);
@@ -67,7 +78,7 @@ int sh_script(char **argv, char **env)
 		{	
 			if (is_found_and_excecutable(av, paths_head))
 			{
-				printf("XXXXXXXXError!! Command not found\n");
+				//printf("XXXXXXXXError!! Command not found\n");
 			}
 			else
 			{
@@ -82,7 +93,7 @@ int sh_script(char **argv, char **env)
 			}
 			if (!done)
 			{
-				printf("check command\n");
+				//printf("check command\n");
 				if (is_built_in_commnad(av, &ac))
 				{
 					printf("hsh : not found\n");
@@ -91,8 +102,9 @@ int sh_script(char **argv, char **env)
 		}
 		free_av_memory(av, ac);
 	}
-	free(av);
+    free_and_NULL(&av);
 	free_list(paths_head);
+	free_manager(NULL);
 	return (0);
 }
 
@@ -142,8 +154,9 @@ int sh_non_interactive(char **env)
 		free_av_memory(av, ac);
 
 	}
-	free(av);
-	free_list(paths_head);
+	free_and_NULL(&av);
+    free_list(paths_head);
+    free_manager(NULL);
 	return (0);
 }
 int sh_interactive(char **env)
@@ -165,7 +178,7 @@ int sh_interactive(char **env)
 		c_s = get_command(av, &ac);
 		if (c_s == -1)
 		{
-			printf("Error!! Can't get command\n");
+			//printf("Error!! Can't get command\n");
 			continue;
 		}
 		else if (c_s == -2)			/* EOF */
@@ -206,7 +219,8 @@ int sh_interactive(char **env)
 
 
 	}
-	free(av);
-	free_list(paths_head);
+	free_and_NULL(&av);
+    free_list(paths_head);
+    free_manager(NULL);
 	return (0);
 }
