@@ -81,7 +81,7 @@ int sh_script(char **argv, char **env)
 			}
 			if (!done)
 			{
-				if (is_built_in_commnad(av))
+				if (is_built_in_commnad(av, &ac))
 				{
 					printf("hsh : not found\n");
 				}
@@ -130,7 +130,7 @@ int sh_non_interactive(char **env)
 			}
 			if (!done)
 			{
-				if (is_built_in_commnad(av))
+				if (is_built_in_commnad(av, &ac))
 				{
 					printf("hsh : not found\n");
 				}
@@ -188,7 +188,7 @@ int sh_interactive(char **env)
 			continue;
 		}
 
-		if (is_built_in_commnad(av))
+		if (is_built_in_commnad(av, &ac))
 		{
 			printf("hsh : not found\n");
 		}

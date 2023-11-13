@@ -1,7 +1,7 @@
 #include "command.h"
 #include "strings.h"
 
-int is_built_in_commnad(char **av)
+int is_built_in_commnad(char **av, int *ac)
 {
     command_t commands[NO_COMMANDS] = {{"cd" , cd}, {"exit", exit}};
     int i = 0;
@@ -12,7 +12,7 @@ int is_built_in_commnad(char **av)
         result =  _strcmp(av[0], commands[i].command);
         if (result == 0)
         {
-            commands[i].function(av);
+            commands[i].function(av, ac);
             return (0);
         }
         i++;

@@ -4,7 +4,7 @@
 
 #define NO_COMMANDS 2
 
-typedef void (*command_func)(char **av);
+typedef int (*command_func)(char **av, int *ac);
 
 typedef struct{
 	char *command;
@@ -14,7 +14,7 @@ typedef struct{
 int is_built_in_commnad(char **av);
 
 /* Declaration of built in commands*/
-void cd(char **av);
-void shell_exit(char **av);
+int cd(char **av, int *ac);
+int shell_exit(char **av, int *ac);
 #endif 
 

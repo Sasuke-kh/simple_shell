@@ -12,7 +12,7 @@ int change_ev(const char *current, char *current_directory, const char *prev);
  * Return: 0 on success -1 on failure
  */
 
-int main(int ac, char **av)
+int _cd(char **av, int *ac)
 {
 	const char *home = getenv("HOME");
 	const char *prev = getenv("OLDPWD");
