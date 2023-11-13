@@ -9,11 +9,10 @@
 #include "main.h"
 #include "strings.h"
 #include "helpers.h"
-
+extern int i ;
 int sh_script(char **argv, char **env);
 int sh_non_interactive(char **env);
 int sh_interactive(char **env);
-void free_av_memory(char **av, int ac);
 
 int main(int argc, char **argv, char **env)
 {
@@ -53,8 +52,10 @@ int sh_script(char **argv, char **env)
 	}
 
 	av = (char **)malloc(100 * sizeof(char *));  /*Is 100 enough ? */
+	
 	if (av == NULL)
 		return (-1);
+	free_manager(av);	
 
 	while (!(get_command_from_file(fd, av, &ac)))
 	{
@@ -89,7 +90,7 @@ int sh_script(char **argv, char **env)
 		}
 		free_av_memory(av, ac);
 	}
-	free(av);
+	free_and_NULL(&av);
 	free_list(paths_head);
 	return (0);
 }
@@ -206,5 +207,6 @@ void free_av_memory(char **av, int ac)
 	for (i = 0; i < ac; i++)
 	{
 		free(av[i]);
+		av[i] = NULL;
 	}
 }

@@ -11,6 +11,21 @@ void free_manager(void *ptr)
 	}
 	else
 	{
-		free_list_ptr(headptr);
+		free_list_ptr(headptr); 
 	}
+}
+
+void free_av_memory(char **av, int ac)
+{
+    int i = 0;
+    for (i = 0; i < ac; i++)
+    {
+        free_and_NULL(&(av[i]));
+    }
+}
+
+void free_and_NULL(void **ptr)
+{
+	free(*ptr);
+	*ptr = NULL;
 }

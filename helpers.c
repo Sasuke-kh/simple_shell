@@ -58,6 +58,7 @@ int get_command_from_file(int fd, char **av, int *ac)
 	line = (char *)malloc(100);
 	if (line == NULL)
 		return (-1);
+	free_manager(line);
 	copy_line = line;
 	size = _getline(&line, &n, fd);
 	if (size == -2)
