@@ -11,10 +11,10 @@ typedef struct{
 	command_func function;
 }command_t;
 
-int is_built_in_commnad(char **av);
+int is_built_in_commnad(char **av, int *ac);
 
 /* Declaration of built in commands*/
-int cd(char **av, int *ac);
+int _cd(char **av, int *ac);
 int shell_exit(char **av, int *ac);
 #endif 
 
