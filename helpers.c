@@ -12,11 +12,11 @@ int get_command(char **av, int *ac)
 	char *line;
 	char *copy_line;
 	ssize_t size;
-	size_t n = 0;
+	size_t n = 100;
 	char* token;
 	int i = 0;
 
-	line = (char *)malloc(100);
+	line = (char *)_malloc(100);
 	if (line == NULL)
 		return (-1);
 	copy_line = line;
@@ -41,7 +41,7 @@ int get_command(char **av, int *ac)
 	av[i] = NULL;	
 	*ac = i;
 	free(line);
-	free(token);
+//	free(token);
 	return (0);
 }
 
@@ -51,11 +51,11 @@ int get_command_from_file(int fd, char **av, int *ac)
 	char *line;
 	char *copy_line;
 	ssize_t size;
-	size_t n = 1;
+	size_t n = 100;
 	char* token;
 	int i = 0;
 
-	line = (char *)malloc(100);
+	line = (char *)_malloc(100);
 	if (line == NULL)
 		return (-1);
 	copy_line = line;
@@ -80,7 +80,7 @@ int get_command_from_file(int fd, char **av, int *ac)
 	av[i] = NULL;
 	*ac = i;
 	free(line);
-	free(token);
+//	free(token);
 	return (0);
 }
 
@@ -170,7 +170,7 @@ int is_found_and_excecutable(char **av, list_t *paths_head)
 	{	
 		n1 = trav_path->len;
 		n2 = _strlen(av[0]);
-		testFile = (char *)malloc(n1 + n2 + 2);
+		testFile = (char *)_malloc(n1 + n2 + 2);
 		if (testFile == NULL)
 			return (-2);
 		_strcpy(testFile, trav_path->str);

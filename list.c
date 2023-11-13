@@ -47,11 +47,11 @@ list_t *add_node(list_t **head, const char *str)
 	char *new_string = NULL;
 	unsigned int len = 0;
 
-	new_node = (list_t *)malloc(sizeof(list_t));
+	new_node = (list_t *)_malloc(sizeof(list_t));
 
 	if (new_node == NULL)
 		return (NULL);
-	new_string = strdup(str);
+	new_string = _strdup(str);
 	if (new_string == NULL)
 	{
 		free(new_node);
@@ -79,10 +79,10 @@ list_t *add_node_end(list_t **head, const char *str)
 	unsigned int len = 0;
 	list_t *trav_node = *head;
 
-	new_node = (list_t *)malloc(sizeof(list_t));
+	new_node = (list_t *)_malloc(sizeof(list_t));
 	if (new_node == NULL)
 		return (NULL);
-	new_string = strdup(str);
+	new_string = _strdup(str);
 	if (new_string == NULL)
 	{
 		free(new_node);

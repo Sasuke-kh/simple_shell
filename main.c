@@ -9,7 +9,7 @@
 #include "main.h"
 #include "strings.h"
 #include "helpers.h"
-
+#include "free_manager.h"
 int sh_script(char **argv, char **env);
 int sh_non_interactive(char **env);
 int sh_interactive(char **env);
@@ -52,12 +52,13 @@ int sh_script(char **argv, char **env)
 		return (-4);
 	}
 
-	av = (char **)malloc(100 * sizeof(char *));  /*Is 100 enough ? */
+	av = (char **)_malloc(100 * sizeof(char *));  /*Is 100 enough ? */
 	if (av == NULL)
 		return (-1);
 
 	while (!(get_command_from_file(fd, av, &ac)))
 	{
+		done = 0;
 		if (get_PATH(env, &paths_head))
 		{
 			printf("Error!! Can't get path\n");
@@ -66,14 +67,14 @@ int sh_script(char **argv, char **env)
 		{	
 			if (is_found_and_excecutable(av, paths_head))
 			{
-				/*printf("XXXXXXXXError!! Command not found\n");*/
+				printf("XXXXXXXXError!! Command not found\n");
 			}
 			else
 			{
 				done = 1;
 				if (fork_and_execve(av, env))
 				{
-					printf("Error!! Commmand can't get executed\n");
+					//printf("Error!! Commmand can't get executed\n");
 				}
 				else
 				{
@@ -81,6 +82,7 @@ int sh_script(char **argv, char **env)
 			}
 			if (!done)
 			{
+				printf("check command\n");
 				if (is_built_in_commnad(av, &ac))
 				{
 					printf("hsh : not found\n");
@@ -101,12 +103,13 @@ int sh_non_interactive(char **env)
 	list_t *paths_head = NULL;
 	int done = 0;
 
-	av = (char **)malloc(100 * sizeof(char *));  /*Is 100 enough?*/
+	av = (char **)_malloc(100 * sizeof(char *));  /*Is 100 enough?*/
 	if (av == NULL)
 		return (-1);
 
 	while (!(get_command_from_file(0, av, &ac)))
-	{
+	{	
+		done = 0;
 		if (get_PATH(env, &paths_head))
 		{
 			printf("Error!! Can't get path\n");
@@ -121,7 +124,7 @@ int sh_non_interactive(char **env)
 			{
 				if (fork_and_execve(av, env))
 				{
-					printf("Error!! Commmand can't get executed\n");
+					//printf("Error!! Commmand can't get executed\n");
 				}
 				else
 				{
@@ -150,12 +153,13 @@ int sh_interactive(char **env)
 	char **av = NULL;
 	list_t *paths_head = NULL;
 	int c_s = 0;
-
-	av = (char **)malloc(100 * sizeof(char *));  /*Is 100 enough ?*/
+	int done;
+	av = (char **)_malloc(100 * sizeof(char *));  /*Is 100 enough ?*/
 	if (av == NULL)
 		return (-1);
 	while (status)
 	{
+		done = 0;	
 		printf("($) ");
 		fflush(stdout);
 		c_s = get_command(av, &ac);
@@ -168,43 +172,41 @@ int sh_interactive(char **env)
 		{
 			printf("\n");
 			break;
-		}
-
+		}	
 		if (get_PATH(env, &paths_head))
 		{
 			printf("Error!! Can't get path\n");
-			break;
-		}
-		if (is_found_and_excecutable(av, paths_head))
-		{
 		}
 		else
 		{
-			if (fork_and_execve(av, env))
+			if (is_found_and_excecutable(av, paths_head))
 			{
-				printf("Error!! Commmand can't get executed\n");
-			}
-			free_av_memory(av, ac);
-			continue;
-		}
 
-		if (is_built_in_commnad(av, &ac))
-		{
-			printf("hsh : not found\n");
+			}
+			else
+			{
+				if (fork_and_execve(av, env))
+				{
+				//	printf("Error!! Commmand can't get executed\n");
+				}
+				else
+				{
+				}
+				done = 1;
+			}
+			if (!done)
+			{
+				if (is_built_in_commnad(av, &ac))
+				{
+					printf("hsh : not found\n");
+				}
+			}
 		}
 		free_av_memory(av, ac);
+
+
 	}
 	free(av);
 	free_list(paths_head);
 	return (0);
-}
-
-
-void free_av_memory(char **av, int ac)
-{
-	int i = 0;
-	for (i = 0; i < ac; i++)
-	{
-		free(av[i]);
-	}
 }
