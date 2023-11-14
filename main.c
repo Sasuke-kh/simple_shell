@@ -11,6 +11,7 @@
 #include "helpers.h"
 #include "memory_manager.h"
 #include <signal.h>
+#include "env.h"
 
 typedef void (*sighandler_t)(int);
 
@@ -29,6 +30,8 @@ int main(int argc, char **argv, char **env)
 	sighandler_t sig = signal(SIGINT, exit_handler);
 	if (sig == SIG_ERR)
 		printf("ERROR\n");
+	if (heap_environ())
+		printf("ERROR Can't heap environ\n");
 	if (argc > 1)
 	{
 		sh_script(argv, env);

@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "env.h"
 int cd_home(const char *home);
 int change_ev(const char *current, char *current_directory, const char *prev);
 
@@ -14,9 +14,9 @@ int change_ev(const char *current, char *current_directory, const char *prev);
 
 int _cd(char **av, int *ac)
 {
-	const char *home = getenv("HOME");
-	const char *prev = getenv("OLDPWD");
-	const char *current = getenv("PWD");
+	const char *home = _getenv("HOME");
+	const char *prev = _getenv("OLDPWD");
+	const char *current = _getenv("PWD");
 	char current_directory[4096];
 
 	if (*ac == 1)
@@ -102,11 +102,11 @@ int cd_home(const char *home)
 
 int change_ev(const char *current, char *current_directory, const char *prev)
 {
-	if (setenv(prev, current, 1) == 0)
+	if (_setenv(prev, current, 1) == 0)
 	{
 		if (getcwd(current_directory, sizeof(current_directory)) != NULL)
 		{
-			if (setenv(current, current_directory, 1) == 0)
+			if (_setenv(current, current_directory, 1) == 0)
 				return (0);
 			else
 				return (-1);
