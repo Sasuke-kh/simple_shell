@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "memory_manager.h"
 int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
 int _putchar(char c);
@@ -14,4 +14,5 @@ int _strncmp(char *s1, char *s2, int n);
 char *_strtok(char *str, const char *delim);
 void print_str(char *str);
 void print_error(char *str);
+int _atoi(char *s);
 #endif /* STRINGS_H */

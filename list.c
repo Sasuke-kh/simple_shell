@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "strings.h"
 /**
 * list_len - count of number of elements of a list
 * @h: pointer to list node
@@ -47,11 +48,11 @@ list_t *add_node(list_t **head, const char *str)
 	char *new_string = NULL;
 	unsigned int len = 0;
 
-	new_node = (list_t *)malloc(sizeof(list_t));
+	new_node = (list_t *)_malloc(sizeof(list_t));
 
 	if (new_node == NULL)
 		return (NULL);
-	new_string = strdup(str);
+	new_string = _strdup(str);
 	if (new_string == NULL)
 	{
 		free(new_node);
@@ -79,10 +80,10 @@ list_t *add_node_end(list_t **head, const char *str)
 	unsigned int len = 0;
 	list_t *trav_node = *head;
 
-	new_node = (list_t *)malloc(sizeof(list_t));
+	new_node = (list_t *)_malloc(sizeof(list_t));
 	if (new_node == NULL)
 		return (NULL);
-	new_string = strdup(str);
+	new_string = _strdup(str);
 	if (new_string == NULL)
 	{
 		free(new_node);
@@ -120,7 +121,7 @@ void free_list(list_t *head)
 	{
 		free_node = trav_node;
 		trav_node = trav_node->next;
-		free(free_node->str);
-		free(free_node);
+		free_and_NULL(&(free_node->str));
+		free_and_NULL(&free_node);
 	}
 }

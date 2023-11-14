@@ -19,7 +19,7 @@ int _cd(char **av, int *ac)
 	const char *current = getenv("PWD");
 	char current_directory[4096];
 
-	if (ac == 1)
+	if (*ac == 1)
 	{
 		if (cd_home(home) == 0)
 			return (0);
