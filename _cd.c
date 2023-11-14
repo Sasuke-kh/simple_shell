@@ -4,7 +4,7 @@
 #include <string.h>
 #include "env.h"
 int cd_home(const char *home);
-int change_ev(const char *current, char *current_directory, const char *prev);
+int change_ev(const char *current, char *current_directory);
 
 /**
  * _cd - change current working directory
@@ -16,15 +16,16 @@ int change_ev(const char *current, char *current_directory, const char *prev);
 int _cd(char **av, int *ac)
 {
 	const char *home = _getenv("HOME");
-	const char *prev = _getenv("OLDPWD");
+	char *prev;
 	const char *current = _getenv("PWD");
 	char current_directory[1024];
 
 	if (*ac == 1)
 	{
+		prev = current;
 		if (cd_home(home) == 0)
 		{
-			if (change_ev(current, current_directory, prev) == 0)
+			if (change_ev(current, current_directory) == 0)
 				return (0);
 			else
 				return (-1);
@@ -36,7 +37,8 @@ int _cd(char **av, int *ac)
 	{
 		if (chdir(prev) == 0)
 		{
-			if (change_ev(current, current_directory, prev) == 0)
+			prev = current;
+			if (change_ev(current, current_directory) == 0)
 				return (0);
 			else
 				return (-1);
@@ -46,9 +48,10 @@ int _cd(char **av, int *ac)
 	}
 	if (strcmp(av[1], "..") == 0)
 	{
+		prev = current;
 		if (chdir("..") == 0)
 		{
-			if (change_ev(current, current_directory, prev) == 0)
+			if (change_ev(current, current_directory) == 0)
 				return (0);
 			else
 				return (-1);
@@ -58,9 +61,10 @@ int _cd(char **av, int *ac)
 	}
 	else
 	{
+		prev = current;
 		if (chdir(av[1]) == 0)
 		{
-			if (change_ev(current, current_directory, prev) == 0)
+			if (change_ev(current, current_directory) == 0)
 				return (0);
 			else
 				return (-1);
@@ -98,15 +102,12 @@ int cd_home(const char *home)
  * Return: 0 on success -1 on failure
  */
 
-int change_ev(const char *current, char *current_directory, const char *prev)
+int change_ev(const char *current, char *current_directory)
 {
-	if (_setenv(prev, current, 1) == 0)
-	{
 		if (getcwd(current_directory, 1024) != NULL)
 		{
 			if (_setenv(current, current_directory, 1) == 0)
 			{
-				printf("\n\n%s\n\n", prev);
 				return (0);
 			}
 			else
@@ -114,7 +115,4 @@ int change_ev(const char *current, char *current_directory, const char *prev)
 		}
 		else
 			return (-1);
-	}
-	else
-		return (-1);
 }
