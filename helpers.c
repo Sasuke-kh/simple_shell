@@ -66,9 +66,11 @@ int get_command_from_file(int fd, char **av, int *ac)
 		free_and_NULL(copy_line);
 		return (-2);
 	}
+	else if (size <= 0)
+		return (-1);
+
 	if (line[size - 1] == '\n')
 		line[size - 1] = '\0';
-
 	token = _strtok(line, " ");
 	/*check if first token is alias replace it with equivelant*/
 
@@ -98,7 +100,7 @@ int fork_and_execve(char **av, char **env)
 	{
 		if(execve(av[0], av, env) == -1)
 		{
-			perror("Error!!\n");
+			perror("Errorx!!\n");
 			return -2;
 		}
 	}
