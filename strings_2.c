@@ -2,11 +2,11 @@
 #include <stdlib.h>
 
 /**
-* _strdup - created duplicate to string
-* @str: char pointer to string to be duplicated
-*
-* Return: char pointer to duplicated string
-*/
+ * _strdup - created duplicate to string
+ * @str: char pointer to string to be duplicated
+ *
+ * Return: char pointer to duplicated string
+ */
 char *_strdup(char *str)
 {
 	unsigned int size = 0, i = 0;
@@ -31,14 +31,14 @@ char *_strdup(char *str)
 }
 
 /**
-* _strcmp - compares the two strings s1 and s2
-* @s1: pointer to first string
-* @s2: pointer to second string
-*
-* Return: returns an integer less that, equal to, or greater than zero if
-* s1 is found, respectively to be less than, to match, or to be greater than
-* s2.
-*/
+ * _strcmp - compares the two strings s1 and s2
+ * @s1: pointer to first string
+ * @s2: pointer to second string
+ *
+ * Return: returns an integer less that, equal to, or greater than zero if
+ * s1 is found, respectively to be less than, to match, or to be greater than
+ * s2.
+ */
 
 int _strcmp(char *s1, char *s2)
 {
@@ -57,16 +57,16 @@ int _strcmp(char *s1, char *s2)
 
 int _strncmp(char *s1, char *s2, int n)
 {
-    int idx = 0;
-    int result = 0;
+	int idx = 0;
+	int result = 0;
 
-    while ((s1[idx] != '\0') && (s2[idx] != '\0') && (result == 0) && (idx < n))
-    {
-        result = s1[idx] - s2[idx];
-        idx++;
-    }
+	while ((s1[idx] != '\0') && (s2[idx] != '\0') && (result == 0) && (idx < n))
+	{
+		result = s1[idx] - s2[idx];
+		idx++;
+	}
 
-    return (result);
+	return (result);
 }      
 
 /**
@@ -82,25 +82,44 @@ char *_strtok(char *str, const char *delim)
 	static char *next_token;
 	char *current_token;
 	const char *d;
+	static int prev_not_d = 0; 
 
 	if (str != NULL)
+	{
 		token = str;
+		prev_not_d = 0;   /* in case of new string but not first call*/
+	}
 	if (token == NULL || *token == '\0')
 		return (NULL);
 	current_token = token;
 	while (*token != '\0')
 	{
-		for (d = delim; *d != '\0'; d++)
-		{
-			if (*token == *d)
+		d = delim;
+
+		if (*token == *d)
+		{	
+			if ((prev_not_d))
 			{
 				*token = '\0';
 				next_token = token + 1;
 				token = next_token;
+				prev_not_d = 0;
 				return (current_token);
 			}
+			else
+			{
+				current_token++;
+			}
+			prev_not_d = 0;
+		}
+		else
+		{
+			prev_not_d = 1;
 		}
 		token++;
 	}
-	return (current_token);
+	if (prev_not_d)
+		return (current_token);
+	else
+		return (NULL);
 }
