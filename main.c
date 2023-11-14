@@ -13,6 +13,8 @@
 #include <signal.h>
 #include "env.h"
 
+extern char **environ;
+
 typedef void (*sighandler_t)(int);
 
 int sh_script(char **argv, char **env);
@@ -34,17 +36,17 @@ int main(int argc, char **argv, char **env)
 		printf("ERROR Can't heap environ\n");
 	if (argc > 1)
 	{
-		sh_script(argv, env);
+		sh_script(argv, environ);
 	}
 	else if (argc == 1)
 	{
 		if (isatty(0))
 		{
-			sh_interactive(env);
+			sh_interactive(environ);
 		}
 		else
 		{
-			sh_non_interactive(env);
+			sh_non_interactive(environ);
 		}
 	}
 

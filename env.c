@@ -41,7 +41,6 @@ static int  copy_all_env(char **old_env, char **new_env)
 void print_env(void)
 {
 	int i = 0;
-
 	while (environ[i])
 	{
 		printf("%s\n", environ[i]);
