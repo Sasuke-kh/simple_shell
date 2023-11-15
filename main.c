@@ -21,10 +21,13 @@ typedef void (*sighandler_t)(int);
 int sh_handler(char **env, int fd, int is_ineractive);
 void exit_handler(int i)
 {
-	free_manager(NULL);
-	exit(0);
+	if (i == SIGINT)
+	{
+		free_manager(NULL);
+		exit(0);
+	}
 }
-int main(int argc, char **argv, char **env)
+int main(int argc, char **argv)
 {
 	sighandler_t sig;
 	int is_interactive = 0;
@@ -89,7 +92,7 @@ int sh_handler(char **env, int fd, int is_interactive)
 		if (c_s == -1 || ac == 0)
 		{	
 			/*Should we continue or exit ??????*/
-			//printf("Error!! Can't get command\n");
+			/*printf("Error!! Can't get command\n");*/
 			continue;
 		}
 		else if (c_s == -2)			/* EOF */
@@ -112,7 +115,7 @@ int sh_handler(char **env, int fd, int is_interactive)
 			{
 				if (fork_and_execve(av, env))
 				{
-					//	printf("Error!! Commmand can't get executed\n");
+					/*	printf("Error!! Commmand can't get executed\n");*/
 				}
 				else
 				{
@@ -127,12 +130,8 @@ int sh_handler(char **env, int fd, int is_interactive)
 				}
 			}
 		}
-		free_av_memory(av, ac);
-
 
 	}
-	free_and_NULL(&av);
-	free_list(paths_head);
 	free_manager(NULL);
 	return (0);
 }

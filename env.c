@@ -15,7 +15,7 @@ int heap_environ(void)
 	if (copy_all_env(environ, new_env))
 		return (-1);
 
-	//update environ to be new_env
+	/*update environ to be new_env*/
 	environ = new_env;
 	return (0);
 }

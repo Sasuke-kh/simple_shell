@@ -11,11 +11,11 @@ char *_getenv(const char *name)
 	int name_len = 0;
 	char *value = NULL;
 
-	name_len = _strlen(name);
+	name_len = _strlen((char *)name);
 
 	while(environ[i] != NULL && result != 0)
 	{
-		result =  _strncmp(name , environ[i], name_len);
+		result =  _strncmp((char *)name , environ[i], name_len);
 		i++;
 	}
 	if (result)
@@ -34,12 +34,12 @@ int _setenv(const char *name, const char *value, int overwrite)
 	int value_len = 0;
 	char *new_name = NULL;
 
-	name_len = _strlen(name);
-	value_len = _strlen(value);
+	name_len = _strlen((char *)name);
+	value_len = _strlen((char *)value);
 
 	while(environ[i] != NULL && result != 0)
 	{
-		result =  _strncmp(name , environ[i], name_len);
+		result =  _strncmp((char *)name , environ[i], name_len);
 		i++;
 	}
 	if (result == 0)
@@ -57,9 +57,9 @@ int _setenv(const char *name, const char *value, int overwrite)
 			if(new_name == NULL)
 				return (-1);
 			new_name[0] = '\0';
-			_strcat(new_name, name);
+			_strcat(new_name, (char *)name);
 			_strcat(new_name, "=");
-			_strcat(new_name, value);
+			_strcat(new_name, (char *)value);
 			environ[i] = new_name;
 			return (0);
 		}
@@ -72,9 +72,9 @@ int _setenv(const char *name, const char *value, int overwrite)
 		if(new_name == NULL)
 			return (-1);
 		new_name[0] = '\0';
-		_strcat(new_name, name);
+		_strcat(new_name, (char *)name);
 		_strcat(new_name, "=");
-		_strcat(new_name, value);
+		_strcat(new_name, (char *)value);
 		environ[i] = new_name;
 
 		environ[i + 1] = NULL;    /* append NULL to end*/
@@ -87,13 +87,12 @@ int _unsetenv(const char *name)
 	int i = 0;
 	int result = 1;
 	int name_len = 0;
-	char *value = NULL;
 
-	name_len = _strlen(name);
+	name_len = _strlen((char *)name);
 
 	while(environ[i] != NULL && result != 0)
 	{
-		result =  _strncmp(name , environ[i], name_len);
+		result =  _strncmp((char *)name , environ[i], name_len);
 		i++;
 	}
 	if (result)
