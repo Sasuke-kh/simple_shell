@@ -2,7 +2,11 @@
 #include "memory_manager.h"
 #include "strings.h"
 
-extern char **environ;
+/**
+ * _getenv - idk
+ * @name: idk
+ * Return: idk
+ */
 
 char *_getenv(const char *name)
 {
@@ -26,6 +30,15 @@ char *_getenv(const char *name)
 		return (NULL);
 	return (value);
 }
+
+/**
+ * _setenv - idk
+ * @name: idk
+ * @value: idk
+ * @overwrite: idk
+ * Return: idk
+ */
+
 int _setenv(const char *name, const char *value, int overwrite)
 {
 	int i = 0;
@@ -76,6 +89,12 @@ int _setenv(const char *name, const char *value, int overwrite)
 		return (0);
 	}
 }
+
+/**
+ * _unsetenv - idk
+ * @name: idk
+ * Return: idk
+ */
 
 int _unsetenv(const char *name)
 {
