@@ -13,9 +13,9 @@ char *_getenv(const char *name)
 
 	name_len = _strlen((char *)name);
 
-	while(environ[i] != NULL && result != 0)
+	while (environ[i] != NULL && result != 0)
 	{
-		result =  _strncmp((char *)name , environ[i], name_len);
+		result = _strncmp((char *)name, environ[i], name_len);
 		i++;
 	}
 	if (result)
@@ -36,10 +36,9 @@ int _setenv(const char *name, const char *value, int overwrite)
 
 	name_len = _strlen((char *)name);
 	value_len = _strlen((char *)value);
-
-	while(environ[i] != NULL && result != 0)
+	while (environ[i] != NULL && result != 0)
 	{
-		result =  _strncmp((char *)name , environ[i], name_len);
+		result = _strncmp((char *)name, environ[i], name_len);
 		i++;
 	}
 	if (result == 0)
@@ -50,11 +49,9 @@ int _setenv(const char *name, const char *value, int overwrite)
 		}
 		else
 		{
-			/*replace the vairable with another with the new value*/
-
-			i--;  											 /*go back to index of matched name*/
+			i--;
 			new_name = _malloc(name_len + value_len + 2);    /* '=' + '\0'*/
-			if(new_name == NULL)
+			if (new_name == NULL)
 				return (-1);
 			new_name[0] = '\0';
 			_strcat(new_name, (char *)name);
@@ -67,16 +64,14 @@ int _setenv(const char *name, const char *value, int overwrite)
 	}
 	else
 	{
-		/*Not found . just append it to the list*/
 		new_name = _malloc(name_len + value_len + 2);    /* '=' + '\0'*/
-		if(new_name == NULL)
+		if (new_name == NULL)
 			return (-1);
 		new_name[0] = '\0';
 		_strcat(new_name, (char *)name);
 		_strcat(new_name, "=");
 		_strcat(new_name, (char *)value);
 		environ[i] = new_name;
-
 		environ[i + 1] = NULL;    /* append NULL to end*/
 		return (0);
 	}
@@ -90,9 +85,9 @@ int _unsetenv(const char *name)
 
 	name_len = _strlen((char *)name);
 
-	while(environ[i] != NULL && result != 0)
+	while (environ[i] != NULL && result != 0)
 	{
-		result =  _strncmp((char *)name , environ[i], name_len);
+		result = _strncmp((char *)name, environ[i], name_len);
 		i++;
 	}
 	if (result)
@@ -100,7 +95,7 @@ int _unsetenv(const char *name)
 
 	/*shift all following variables*/
 	i--;
-	while(environ[i] != NULL)
+	while (environ[i] != NULL)
 	{
 		environ[i] = environ[i + 1];
 		i++;
