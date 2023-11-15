@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 
 int sh_handler(char **env, int fd, int is_interactive)
 {
-	int status = 1;
+	int status = 0;
 	int ac;
 	char **av = NULL;
 	list_t *paths_head = NULL;
@@ -83,7 +83,7 @@ int sh_handler(char **env, int fd, int is_interactive)
 	av = (char **)_malloc(100 * sizeof(char *));  /*Is 100 enough ?*/
 	if (av == NULL)
 		return (-1);
-	while (status)
+	while (1)
 	{
 		done = 0;
 		if(is_interactive)
@@ -138,12 +138,13 @@ int sh_handler(char **env, int fd, int is_interactive)
 					print_error(av[0]);
 					print_error(": not found");
 					print_error("\n");
+					status = 127;
 				}
 			}
 		}
 
 	}
 	free_manager(NULL);
-	return (0);
+	return (status);
 }
 
