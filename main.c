@@ -19,6 +19,13 @@ extern char **environ;
 typedef void (*sighandler_t)(int);
 int i;
 int sh_handler(char **env, int fd, int is_ineractive);
+
+/**
+ * exit_handler - exit prog
+ * @i: idk
+ * Return: voin oc
+ */
+
 void exit_handler(int i)
 {
 	if (i == SIGINT)
@@ -27,17 +34,26 @@ void exit_handler(int i)
 		exit(0);
 	}
 }
+
+/**
+ * main - main function
+ * @argc: arg count
+ * @argv: args
+ * Return: idk
+ */
+
 int main(int argc, char **argv)
 {
 	sighandler_t sig;
 	int is_interactive = 0;
 	int fd;
 	int exit_status;
+
 	sig = signal(SIGINT, exit_handler);
 	if (sig == SIG_ERR)
 	{
 		print_error("ERROR\n");
-		return(-5);
+		return (-5);
 	}
 	if (heap_environ())
 	{
@@ -72,6 +88,14 @@ int main(int argc, char **argv)
 	return (exit_status);
 }
 
+/**
+ * sh_handler - idk
+ * @env: idk
+ * @fd: idk
+ * @is_interactive: idk
+ * Return: idk
+ */
+
 int sh_handler(char **env, int fd, int is_interactive)
 {
 	int status = 0;
@@ -79,12 +103,13 @@ int sh_handler(char **env, int fd, int is_interactive)
 	char **av = NULL;
 	list_t *paths_head = NULL;
 	int c_s = 0;
+
 	av = (char **)_malloc(100 * sizeof(char *));  /*Is 100 enough ?*/
 	if (av == NULL)
 		return (-1);
 	while (1)
 	{
-		if(is_interactive)
+		if (is_interactive)
 		{
 			print_str("($) ");
 			fflush(stdout);
@@ -98,7 +123,7 @@ int sh_handler(char **env, int fd, int is_interactive)
 		}
 		else if (c_s == -2)         /* EOF */
 		{
-			if(is_interactive)
+			if (is_interactive)
 				print_str("\n");
 			break;
 		}
@@ -112,10 +137,10 @@ int sh_handler(char **env, int fd, int is_interactive)
 			print_error("\n");
 		}
 		else
-		{	
+		{
 			if (is_built_in_commnad(av, &ac, &status))
-			{ 
-					
+			{
+
 			}
 			else
 			{
@@ -142,4 +167,3 @@ int sh_handler(char **env, int fd, int is_interactive)
 	free_manager(NULL);
 	return (status);
 }
-
