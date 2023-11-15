@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <string.h>
+#include "strings.h"
 #include "env.h"
 int cd_home(const char *home);
 int change_ev(const char *current, char *current_directory);
@@ -39,7 +39,11 @@ int _cd(char **av, int *ac)
 		{
 			prev = current;
 			if (change_ev(current, current_directory) == 0)
+			{
+				print_str(current_directory);
+				print_str("\n");
 				return (0);
+			}
 			else
 				return (-1);
 		}
@@ -70,7 +74,12 @@ int _cd(char **av, int *ac)
 				return (-1);
 		}
 		else
-			return (1);
+		{
+			print_error("sh: 2: cd: can't cd to ");
+			print_error(av[1]);
+			print_str("\n");
+			return (-1);
+		}
 	}
 	return (-1);
 }
