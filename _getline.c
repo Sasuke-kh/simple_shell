@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include "memory_manager.h"
 /**
  * _getline - gets line from stream
  * @lineptr: doc

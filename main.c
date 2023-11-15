@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 		print_str("\n");
 		return (-7);
 	}
-	
+
 	if (argc > 1)
 	{
 		fd  = open(argv[1], O_RDONLY);
@@ -87,23 +87,26 @@ int sh_handler(char **env, int fd, int is_interactive)
 	{
 		done = 0;
 		if(is_interactive)
-		{	
-			print_str("($) ");
+		{
+			printf("($) ");
 			fflush(stdout);
 		}
 		c_s = get_command_from_file(fd, av, &ac);
-		if (c_s == -1 || ac == 0)
-		{	
-			/*Should we continue or exit ??????*/
-			/*printf("Error!! Can't get command\n");*/
-			continue;
+		if (c_s == -1)
+		{
+			printf("Memory allocation failure\n");
+			shell_exit(av, &ac);
 		}
-		else if (c_s == -2)			/* EOF */
+		else if (c_s == -2)         /* EOF */
 		{
 			if(is_interactive)
-				print_str("\n");
+				printf("\n");
 			break;
-		}	
+		}
+		else if (c_s == -3)
+		{
+			continue;
+		}
 		if (get_PATH(env, &paths_head))
 		{
 			print_error("Error!! Can't get path");

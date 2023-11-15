@@ -9,39 +9,45 @@
 #include <string.h>
 #include "memory_manager.h"
 
-
 int get_command_from_file(int fd, char **av, int *ac)
 {
-	char *line;
-	ssize_t size;
-	size_t n = 100;
-	char* token;
-	int i = 0;
+    char *line;
+    ssize_t size;
+    size_t n = 1000;
+    char* token;
+    int i = 0;
 
-	line = (char *)_malloc(100);
-	if (line == NULL)
-		return (-1);
-	size = _getline(&line, &n, fd);
-	if (size == -2)
-	{
-		return (-2);
-	}
-	else if (size <= 0)
-		return (-1);
+    line = (char *)_malloc(1000);
+    if (line == NULL)
+        return (-1);
+    size = _getline(&line, &n, fd);
+    if (size == -2)
+    {
+        return (-2);
+    }
+    else if (size == -1)
+    {
+        return (-1);
+    }
+    else if (size == 0)
+    {
+        return (-3);
+    }
 
-	if (line[size - 1] == '\n')
-		line[size - 1] = '\0';
-	token = _strtok(line, " ");
-	/*check if first token is alias replace it with equivelant*/
+    if (line[size - 1] == '\n')
+        line[size - 1] = '\0';
+    token = _strtok(line, " ");
+    /*check if first token is alias replace it with equivelant*/
 
-	while (token != NULL)
-	{
-		av[i] = _strdup(token);
-		token = _strtok(NULL, " ");
-		i++;
-	}
-	av[i] = NULL;
-	*ac = i;
+    while (token != NULL)
+    {
+        av[i] = _strdup(token);
+        token = _strtok(NULL, " ");
+        i++;
+    }
+    if (i == 0)
+        return (-3);
+    av[i] = NULL;*ac = i;
 	return (0);
 }
 

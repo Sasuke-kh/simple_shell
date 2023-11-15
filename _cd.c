@@ -16,13 +16,13 @@ int change_ev(const char *current, char *current_directory);
 int _cd(char **av, int *ac)
 {
 	const char *home = _getenv("HOME");
-	char *prev;
+	char *prev = NULL;
 	const char *current = _getenv("PWD");
 	char current_directory[1024];
 
 	if (*ac == 1)
 	{
-		prev = current;
+		prev = (char *)current;
 		if (cd_home(home) == 0)
 		{
 			if (change_ev(current, current_directory) == 0)
@@ -33,11 +33,11 @@ int _cd(char **av, int *ac)
 		else
 			return (-1);
 	}
-	if (strcmp(av[1], "-") == 0)
+	if (_strcmp(av[1], "-") == 0)
 	{
 		if (chdir(prev) == 0)
 		{
-			prev = current;
+			prev = (char *)current;
 			if (change_ev(current, current_directory) == 0)
 			{
 				print_str(current_directory);
@@ -50,9 +50,9 @@ int _cd(char **av, int *ac)
 		else
 			return (-1);
 	}
-	if (strcmp(av[1], "..") == 0)
+	if (_strcmp(av[1], "..") == 0)
 	{
-		prev = current;
+		prev = (char *)current;
 		if (chdir("..") == 0)
 		{
 			if (change_ev(current, current_directory) == 0)
@@ -65,7 +65,7 @@ int _cd(char **av, int *ac)
 	}
 	else
 	{
-		prev = current;
+		prev = (char *)current;
 		if (chdir(av[1]) == 0)
 		{
 			if (change_ev(current, current_directory) == 0)
