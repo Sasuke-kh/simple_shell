@@ -12,6 +12,7 @@
 void free_manager(void *ptr)
 {
 	static listptr_t *headptr = NULL;
+
 	if (ptr != NULL)
 	{
 		add_node_end_ptr(&headptr, (void *)ptr);
