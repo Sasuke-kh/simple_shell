@@ -146,7 +146,6 @@ int is_found_and_excecutable(char **av, list_t *paths_head)
 		if (access(testFile, X_OK) == 0)
 		{
 			av[0] = testFile;
-			printf("Bingo \n");
 			return (0);
 		}
 		trav_path = trav_path->next;
