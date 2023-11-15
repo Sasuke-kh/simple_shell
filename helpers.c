@@ -11,43 +11,43 @@
 
 int get_command_from_file(int fd, char **av, int *ac)
 {
-    char *line;
-    ssize_t size;
-    size_t n = 10000;
-    char* token;
-    int i = 0;
+	char *line;
+	ssize_t size;
+	size_t n = 10000;
+	char* token;
+	int i = 0;
 
-    line = (char *)_malloc(10000);
-    if (line == NULL)
-        return (-1);
-    size = _getline(&line, &n, fd);
-    if (size == -2)
-    {
-        return (-2);
-    }
-    else if (size == -1)
-    {
-        return (-1);
-    }
-    else if (size == 0)
-    {
-        return (-3);
-    }
+	line = (char *)_malloc(10000);
+	if (line == NULL)
+		return (-1);
+	size = _getline(&line, &n, fd);
+	if (size == -2)
+	{
+		return (-2);
+	}
+	else if (size == -1)
+	{
+		return (-1);
+	}
+	else if (size == 0)
+	{
+		return (-3);
+	}
 
-    if (line[size - 1] == '\n')
-        line[size - 1] = '\0';
-    token = _strtok(line, " ");
-    /*check if first token is alias replace it with equivelant*/
+	if (line[size - 1] == '\n')
+		line[size - 1] = '\0';
+	token = _strtok(line, " ");
+	/*check if first token is alias replace it with equivelant*/
 
-    while (token != NULL)
-    {
-        av[i] = _strdup(token);
-        token = _strtok(NULL, " ");
-        i++;
-    }
-    if (i == 0)
-        return (-3);
-    av[i] = NULL;*ac = i;
+	while (token != NULL)
+	{
+		av[i] = _strdup(token);
+		token = _strtok(NULL, " ");
+		i++;
+	}
+	if (i == 0)
+		return (-3);
+	av[i] = NULL;*ac = i;
 	return (0);
 }
 
@@ -96,7 +96,7 @@ int get_PATH(char **env, list_t **paths_head)
 	char *copy_pathLine;
 	char *token;
 
-/*	if(*paths_head == NULL)   */
+	/*	if(*paths_head == NULL)   */
 	{
 		while(env[i] != NULL && result != 0)
 		{
@@ -124,12 +124,14 @@ int is_found_and_excecutable(char **av, list_t *paths_head)
 	char *testFile;
 	list_t *trav_path = paths_head;
 
-	/*check current directory first*/
-	if (access(av[0], X_OK) == 0)
+	/*check if full path is provided */
+	if (av[0][0] == '/')
 	{
-		return (0);
+		if (access(av[0], X_OK) == 0)
+		{
+			return (0);
+		}
 	}
-
 	/*check all directories in path*/
 	while(trav_path != NULL)
 	{	
@@ -144,6 +146,7 @@ int is_found_and_excecutable(char **av, list_t *paths_head)
 		if (access(testFile, X_OK) == 0)
 		{
 			av[0] = testFile;
+			printf("Bingo \n");
 			return (0);
 		}
 		trav_path = trav_path->next;
