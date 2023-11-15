@@ -17,7 +17,7 @@
 extern char **environ;
 
 typedef void (*sighandler_t)(int);
-
+int i;
 int sh_handler(char **env, int fd, int is_ineractive);
 void exit_handler(int i)
 {
@@ -93,7 +93,8 @@ int sh_handler(char **env, int fd, int is_interactive)
 		if (c_s == -1)
 		{
 			print_error("Memory allocation failure\n");
-			shell_exit(av, &ac);
+			status = 139;
+			shell_exit(av, &ac, &status);
 		}
 		else if (c_s == -2)         /* EOF */
 		{
@@ -112,7 +113,7 @@ int sh_handler(char **env, int fd, int is_interactive)
 		}
 		else
 		{	
-			if (is_built_in_commnad(av, &ac))
+			if (is_built_in_commnad(av, &ac, &status))
 			{ 
 					
 			}
@@ -132,7 +133,7 @@ int sh_handler(char **env, int fd, int is_interactive)
 			}
 			else
 			{
-				fork_and_execve(av, env);
+				fork_and_execve(av, env, &status);
 			}
 
 		}

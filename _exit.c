@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "memory_manager.h"
 #include "strings.h"
-int shell_exit(char **av, int *ac)
+int shell_exit(char **av, int *ac, int *exit_status)
 {	
 	int i = 0;
 
@@ -14,6 +14,6 @@ int shell_exit(char **av, int *ac)
 	else
 	{
 		free_manager(NULL);	
-		exit(0);
+		exit(*exit_status);
 	}
 }

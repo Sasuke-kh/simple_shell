@@ -14,7 +14,7 @@ int change_ev(const char *current, char *current_directory);
  * Return: 0 on success -1 on failure
  */
 
-int _cd(char **av, int *ac)
+int _cd(char **av, int *ac, __attribute__ ((unused)) int *exit_status)
 {
 	const char *home = _getenv("HOME");
 	const char *current = _getenv("PWD");

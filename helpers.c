@@ -51,7 +51,7 @@ int get_command_from_file(int fd, char **av, int *ac)
 	return (0);
 }
 
-int fork_and_execve(char **av, char **env)
+int fork_and_execve(char **av, char **env, int *exit_status)
 {
 	pid_t pid;
 	int status = 0;
@@ -76,9 +76,10 @@ int fork_and_execve(char **av, char **env)
 		}
 		else
 		{
+			*exit_status = WEXITSTATUS(status);
 			if (WIFEXITED(status) != 1)
 			{
-				printf("status of child process = %d\n", WEXITSTATUS(status));
+				perror("Error \n");
 				return -4;
 			}
 		}

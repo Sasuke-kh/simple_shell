@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "strings.h"
 
-int shell_env(__attribute__ ((unused)) char **av, int *ac)
+int shell_env(__attribute__ ((unused)) char **av, int *ac, __attribute__ ((unused)) int *exit_status)
 {
 	if (*ac == 1)
 	{
@@ -18,7 +18,7 @@ int shell_env(__attribute__ ((unused)) char **av, int *ac)
 	}
 
 }
-int shell_setenv(char **av, int *ac)
+int shell_setenv(char **av, int *ac, __attribute__ ((unused)) int *exit_status)
 {
 	if(*ac != 3)
 	{
@@ -35,7 +35,7 @@ int shell_setenv(char **av, int *ac)
 	}
 	return (0);
 }
-int shell_unsetenv(char **av, int *ac)
+int shell_unsetenv(char **av, int *ac, __attribute__ ((unused)) int *exit_status)
 {
 	if(*ac != 2)
 	{
