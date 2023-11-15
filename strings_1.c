@@ -39,10 +39,8 @@ char *_strcpy(char *dest, char *src)
 	return (dest);
 }
 /**
- * main - entry point
- *
- * Description: print _putchar
- *
+ * _putchar - entry point
+ * @c: character
  * Return: 0 (success)
  */
 int _putchar(char c)
