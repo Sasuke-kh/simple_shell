@@ -47,7 +47,7 @@ char *_strcpy(char *dest, char *src)
  */
 int _putchar(char c)
 {
-	return (write(1, &c, 1));
+	return (write(1, &c, STDOUT_FILENO));
 }
 
 /**
