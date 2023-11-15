@@ -107,7 +107,6 @@ int cd_home(const char *home)
  * change_ev - edit the EV
  * @current: current dir
  * @current_directory: like the name ;)
- * @prev: previos dir
  * Return: 0 on success -1 on failure
  */
 
