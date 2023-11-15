@@ -2,7 +2,6 @@
 #include "memory_manager.h"
 #include "strings.h"
 
-extern char **environ;
 static int  copy_all_env(char **old_env, char **new_env);
 
 /**
