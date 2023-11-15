@@ -19,7 +19,7 @@ ssize_t _getline(char **lineptr, size_t *n, int fd)
 	if (*lineptr == NULL || *n == 0)
 	{
 		*n = INITIAL_BUFFER_SIZE;
-		*lineptr = (char *)malloc(*n);
+		*lineptr = (char *)_malloc(*n);
 		if (*lineptr == NULL)
 		{
 			return (-1); /*Allocation failure*/
@@ -31,7 +31,7 @@ ssize_t _getline(char **lineptr, size_t *n, int fd)
 		if (i >= *n - 1)
 		{
 			new_size = *n * 2;
-			new_ptr = (char *)malloc(new_size);
+			new_ptr = (char *)_malloc(new_size);
 			if (new_ptr == NULL)
 				return (-1); /*Allocation failure*/
 			for (j = 0; j < *n; j++)
