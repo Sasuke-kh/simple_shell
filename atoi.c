@@ -47,3 +47,21 @@ int _atoi(char *s)
 		result = (int)-(result);
 	return ((int)(result));
 }
+
+
+
+int is_number(char *str)
+{
+	int result = 1;
+	
+	while (*str)
+	{
+		if (*str < '0' || *str > '9')
+		{	
+			result = 0;
+			break;
+		}
+		str++;
+	}
+	return (result);
+}
