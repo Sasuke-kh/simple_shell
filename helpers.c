@@ -13,14 +13,15 @@ int get_command_from_file(int fd, char **av, int *ac)
 {
     char *line;
     ssize_t size;
-    size_t n = 1000;
+    size_t n = 10000;
     char* token;
     int i = 0;
 
-    line = (char *)_malloc(1000);
+    line = (char *)_malloc(10000);
     if (line == NULL)
         return (-1);
     size = _getline(&line, &n, fd);
+	printf("size of getline = %ld\n", size);
     if (size == -2)
     {
         return (-2);
