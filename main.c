@@ -36,12 +36,13 @@ int main(int argc, char **argv)
 	sig = signal(SIGINT, exit_handler);
 	if (sig == SIG_ERR)
 	{
-		printf("ERROR\n");
+		print_error("ERROR\n");
 		return(-5);
 	}
 	if (heap_environ())
 	{
-		printf("ERROR Can't heap environ\n");
+		print_error("ERROR Can't heap environ");
+		prnt_str("\n");
 		return (-7);
 	}
 	
@@ -85,7 +86,7 @@ int sh_handler(char **env, int fd, int is_interactive)
 		done = 0;
 		if(is_interactive)
 		{	
-			printf("($) ");
+			print_str("($) ");
 			fflush(stdout);
 		}
 		c_s = get_command_from_file(fd, av, &ac);
@@ -98,12 +99,13 @@ int sh_handler(char **env, int fd, int is_interactive)
 		else if (c_s == -2)			/* EOF */
 		{
 			if(is_interactive)
-				printf("\n");
+				print_str("\n");
 			break;
 		}	
 		if (get_PATH(env, &paths_head))
 		{
-			printf("Error!! Can't get path\n");
+			print_error("Error!! Can't get path");
+			print_str("\n");
 		}
 		else
 		{
@@ -126,7 +128,8 @@ int sh_handler(char **env, int fd, int is_interactive)
 			{
 				if (is_built_in_commnad(av, &ac))
 				{
-					printf("hsh : not found\n");
+					print_error("hsh : not found");
+					print_str("\n");
 				}
 			}
 		}
