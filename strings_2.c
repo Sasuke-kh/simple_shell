@@ -54,6 +54,13 @@ int _strcmp(char *s1, char *s2)
 	return (result);
 }
 
+/**
+ * _strncmp - compair strings
+ * @s1: str 1
+ * @s2: str 2
+ * @n: idk
+ * Return: idk
+ */
 
 int _strncmp(char *s1, char *s2, int n)
 {
