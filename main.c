@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 	if (heap_environ())
 	{
 		print_error("ERROR Can't heap environ");
-		print_str("\n");
+		print_error("\n");
 		return (-7);
 	}
 
@@ -88,19 +88,19 @@ int sh_handler(char **env, int fd, int is_interactive)
 		done = 0;
 		if(is_interactive)
 		{
-			printf("($) ");
+			print_str("($) ");
 			fflush(stdout);
 		}
 		c_s = get_command_from_file(fd, av, &ac);
 		if (c_s == -1)
 		{
-			printf("Memory allocation failure\n");
+			print_error("Memory allocation failure\n");
 			shell_exit(av, &ac);
 		}
 		else if (c_s == -2)         /* EOF */
 		{
 			if(is_interactive)
-				printf("\n");
+				 print_str("\n");
 			break;
 		}
 		else if (c_s == -3)
@@ -110,7 +110,7 @@ int sh_handler(char **env, int fd, int is_interactive)
 		if (get_PATH(env, &paths_head))
 		{
 			print_error("Error!! Can't get path");
-			print_str("\n");
+			print_error("\n");
 		}
 		else
 		{
@@ -132,9 +132,12 @@ int sh_handler(char **env, int fd, int is_interactive)
 			if (!done)
 			{
 				if (is_built_in_commnad(av, &ac))
-				{
-					print_error("hsh : not found");
-					print_str("\n");
+				{	
+					print_error("./hsh: ");
+					print_error("1: ");
+					print_error(av[0]);
+					print_error(": not found");
+					print_error("\n");
 				}
 			}
 		}

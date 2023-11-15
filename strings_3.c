@@ -26,7 +26,7 @@ void print_str(char *str)
  */
 int _puterror(char c)
 {
-	return (write(1, &c, STDERR_FILENO));
+	return (write(STDERR_FILENO, &c, 1));
 }
 
 /**
@@ -41,6 +41,6 @@ void print_error(char *str)
 
 	for (count = 0; str[count] != '\0'; count ++)
 	{
-		_putchar(str[count]);
+		_puterror(str[count]);
 	}
 }
