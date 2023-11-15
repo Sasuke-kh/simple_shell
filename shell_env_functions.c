@@ -40,13 +40,15 @@ int shell_setenv(char **av, int *ac, __attribute__ ((unused)) int *exit_status)
 	if (*ac != 3)
 	{
 		print_error("Error wrong number of arguments");
-		print_str("\n");
-		return (-1);
+		print_error("\n");
+		return(-1);	
 	}
 	else
 	{
 		if (_setenv(av[1], av[2], 1))
-		{
+		{         
+			print_error("Error Can't unset env");
+				print_error("\n");
 			return (-2);
 		}
 	}
@@ -66,13 +68,15 @@ int shell_unsetenv(char **av, int *ac, __attribute__ ((unused)) int *exit_status
 	if (*ac != 2)
 	{
 		print_error("Error wrong number of arguments");
-		print_str("\n");
-		return (-1);
+		print_error("\n");
+		return(-1);
 	}
 	else
 	{
 		if (_unsetenv(av[1]))
-		{
+		{	
+			print_error("Error Can't unset env");
+			print_error("\n");
 			return (-2);
 		}
 	}

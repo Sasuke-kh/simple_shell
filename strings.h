@@ -15,4 +15,5 @@ char *_strtok(char *str, const char *delim);
 void print_str(char *str);
 void print_error(char *str);
 int _atoi(char *s);
+int is_number(char *str);
 #endif /* STRINGS_H */
