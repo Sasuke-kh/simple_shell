@@ -86,7 +86,7 @@ int sh_handler(char **env, int fd, int is_interactive)
 			fflush(stdout);
 		}
 		c_s = get_command_from_file(fd, av, &ac);
-		if (c_s == -1)
+		if (c_s == -1 || ac == 0)
 		{	
 			/*Should we continue or exit ??????*/
 			//printf("Error!! Can't get command\n");
