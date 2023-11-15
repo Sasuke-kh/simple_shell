@@ -21,7 +21,6 @@ int get_command_from_file(int fd, char **av, int *ac)
     if (line == NULL)
         return (-1);
     size = _getline(&line, &n, fd);
-	printf("size of getline = %ld\n", size);
     if (size == -2)
     {
         return (-2);
