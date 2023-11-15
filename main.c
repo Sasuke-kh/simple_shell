@@ -14,7 +14,6 @@
 #include "env.h"
 #include <fcntl.h>
 
-extern char **environ;
 
 typedef void (*sighandler_t)(int);
 int i;
