@@ -11,6 +11,7 @@ int change_ev(const char *current, char *current_directory);
  * _cd - change current working directory
  * @av: arguments
  * @ac: arguments count
+ * @exit_status: like the name
  * Return: 0 on success -1 on failure
  */
 
@@ -21,8 +22,10 @@ int _cd(char **av, int *ac, __attribute__ ((unused)) int *exit_status)
 	static char *prev;
 	char current_directory[1024];
 
-	/*if (prev == NULL)
-		prev = (char *)current;*/
+	/*
+	 * if (prev == NULL)
+	*	prev = (char *)current;
+	*/
 	if (*ac == 1)
 	{
 		if (cd_home(home) == 0)
