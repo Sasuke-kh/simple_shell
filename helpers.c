@@ -125,7 +125,7 @@ int is_found_and_excecutable(char **av, list_t *paths_head)
 	list_t *trav_path = paths_head;
 
 	/*check if full path is provided */
-	if (av[0][0] == '/')
+	if (av[0][0] == '/' || av[0][0] == '.')
 	{
 		if (access(av[0], X_OK) == 0)
 		{
