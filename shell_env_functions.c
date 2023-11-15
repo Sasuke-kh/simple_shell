@@ -11,7 +11,8 @@ int shell_env(__attribute__ ((unused)) char **av, int *ac)
 	}
 	else
 	{
-		printf("Wrong number of arguments\n");
+		print_error("Wrong number of arguments");
+		print_str("\n");
 		return (-1);
 	}
 
@@ -20,7 +21,8 @@ int shell_setenv(char **av, int *ac)
 {
 	if(*ac != 3)
 	{
-		printf("Error wrong number of arguments\n");
+		print_error("Error wrong number of arguments");
+		print_str("\n");
 		return(-1);	
 	}
 	else
@@ -36,7 +38,8 @@ int shell_unsetenv(char **av, int *ac)
 {
 	if(*ac != 2)
 	{
-		printf("Error wrong number of arguments\n");
+		print_error("Error wrong number of arguments");
+		print_str("\n");
 		return(-1);
 	}
 	else
