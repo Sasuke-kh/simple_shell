@@ -4,7 +4,7 @@
  * _getline - gets line from stream
  * @lineptr: doc
  * @n: doc
- * @stream: doc
+ * @fd: doc
  * Return: number of characters read or -1 on failure
  */
 
