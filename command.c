@@ -2,7 +2,7 @@
 #include "strings.h"
 
 /**
- * is_built_ib_command - like the name ;)
+ * is_built_in_commnad - like the name ;)
  * @av: args
  * @ac: args count
  * @exit_status: like the name
