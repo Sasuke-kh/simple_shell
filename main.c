@@ -79,13 +79,11 @@ int sh_handler(char **env, int fd, int is_interactive)
 	char **av = NULL;
 	list_t *paths_head = NULL;
 	int c_s = 0;
-	int done;
 	av = (char **)_malloc(100 * sizeof(char *));  /*Is 100 enough ?*/
 	if (av == NULL)
 		return (-1);
 	while (1)
 	{
-		done = 0;
 		if(is_interactive)
 		{
 			print_str("($) ");
@@ -100,7 +98,7 @@ int sh_handler(char **env, int fd, int is_interactive)
 		else if (c_s == -2)         /* EOF */
 		{
 			if(is_interactive)
-				 print_str("\n");
+				print_str("\n");
 			break;
 		}
 		else if (c_s == -3)
@@ -113,34 +111,30 @@ int sh_handler(char **env, int fd, int is_interactive)
 			print_error("\n");
 		}
 		else
-		{
+		{	
+			if (is_built_in_commnad(av, &ac))
+			{ 
+					
+			}
+			else
+			{
+				continue;
+			}
 			if (is_found_and_excecutable(av, paths_head))
 			{
+				print_error("./hsh: ");
+				print_error("1: ");
+				print_error(av[0]);
+				print_error(": not found");
+				print_error("\n");
+				status = 127;
 
 			}
 			else
 			{
-				if (fork_and_execve(av, env))
-				{
-					/*	printf("Error!! Commmand can't get executed\n");*/
-				}
-				else
-				{
-				}
-				done = 1;
+				fork_and_execve(av, env);
 			}
-			if (!done)
-			{
-				if (is_built_in_commnad(av, &ac))
-				{	
-					print_error("./hsh: ");
-					print_error("1: ");
-					print_error(av[0]);
-					print_error(": not found");
-					print_error("\n");
-					status = 127;
-				}
-			}
+
 		}
 
 	}

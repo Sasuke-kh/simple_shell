@@ -96,11 +96,11 @@ int get_PATH(char **env, list_t **paths_head)
 	char *copy_pathLine;
 	char *token;
 
-	if(*paths_head == NULL)
+/*	if(*paths_head == NULL)   */
 	{
 		while(env[i] != NULL && result != 0)
 		{
-			result =  _strncmp("PATH", env[i], 4);
+			result =  _strncmp("PATH=", env[i], 5);
 			i++;
 		}
 		if (result == -1)
