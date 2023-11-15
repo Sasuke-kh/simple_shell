@@ -125,11 +125,11 @@ int is_found_and_excecutable(char **av, list_t *paths_head)
 	list_t *trav_path = paths_head;
 
 	/*check current directory first*/
-	if (access(av[0], X_OK) == 0)
+/*	if (access(av[0], X_OK) == 0)
 	{
 		return (0);
 	}
-
+*/
 	/*check all directories in path*/
 	while(trav_path != NULL)
 	{	
