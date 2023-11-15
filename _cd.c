@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 #include <unistd.h>
 #include <stdlib.h>
 #include "strings.h"
@@ -16,15 +17,17 @@ int change_ev(const char *current, char *current_directory);
 int _cd(char **av, int *ac)
 {
 	const char *home = _getenv("HOME");
-	char *prev = NULL;
 	const char *current = _getenv("PWD");
+	static char *prev;
 	char current_directory[1024];
 
+	/*if (prev == NULL)
+		prev = (char *)current;*/
 	if (*ac == 1)
 	{
-		prev = (char *)current;
 		if (cd_home(home) == 0)
 		{
+			prev = (char *)current;
 			if (change_ev(current, current_directory) == 0)
 				return (0);
 			else
@@ -37,7 +40,7 @@ int _cd(char **av, int *ac)
 	{
 		if (chdir(prev) == 0)
 		{
-			prev = (char *)current;
+			prev = current_directory;
 			if (change_ev(current, current_directory) == 0)
 			{
 				print_str(current_directory);
@@ -52,9 +55,9 @@ int _cd(char **av, int *ac)
 	}
 	if (_strcmp(av[1], "..") == 0)
 	{
-		prev = (char *)current;
 		if (chdir("..") == 0)
 		{
+			prev = (char *)current;
 			if (change_ev(current, current_directory) == 0)
 				return (0);
 			else
@@ -65,9 +68,9 @@ int _cd(char **av, int *ac)
 	}
 	else
 	{
-		prev = (char *)current;
 		if (chdir(av[1]) == 0)
 		{
+			prev = (char *)current;
 			if (change_ev(current, current_directory) == 0)
 				return (0);
 			else
@@ -75,7 +78,7 @@ int _cd(char **av, int *ac)
 		}
 		else
 		{
-			print_error("sh: 2: cd: can't cd to ");
+			print_error("hsh: 2: cd: can't cd to ");
 			print_error(av[1]);
 			print_str("\n");
 			return (-1);
