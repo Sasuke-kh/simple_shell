@@ -2,7 +2,7 @@
 
 /**
  * _fgetc - reads characters from stream
- * @stream: characters to read
+ * @fd: characters to read
  * Return: buffer or eof
  */
 
