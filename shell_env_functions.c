@@ -1,6 +1,7 @@
 #include "command.h"
 #include "env.h"
 #include <stdio.h>
+#include "strings.h"
 
 int shell_env(__attribute__ ((unused)) char **av, int *ac)
 {
