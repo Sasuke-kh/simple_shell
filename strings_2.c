@@ -67,7 +67,7 @@ int _strncmp(char *s1, char *s2, int n)
 	}
 
 	return (result);
-}      
+}
 
 /**
  * _strtok - splits an array of srings
@@ -82,7 +82,7 @@ char *_strtok(char *str, const char *delim)
 	static char *next_token;
 	char *current_token;
 	const char *d;
-	static int prev_not_d = 0; 
+	static int prev_not_d;
 
 	if (str != NULL)
 	{
@@ -97,7 +97,7 @@ char *_strtok(char *str, const char *delim)
 		d = delim;
 
 		if (*token == *d)
-		{	
+		{
 			if ((prev_not_d))
 			{
 				*token = '\0';
@@ -107,15 +107,11 @@ char *_strtok(char *str, const char *delim)
 				return (current_token);
 			}
 			else
-			{
 				current_token++;
-			}
 			prev_not_d = 0;
 		}
 		else
-		{
 			prev_not_d = 1;
-		}
 		token++;
 	}
 	if (prev_not_d)
