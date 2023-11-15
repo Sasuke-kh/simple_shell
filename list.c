@@ -21,26 +21,11 @@ size_t list_len(const list_t *h)
 	return (n);
 }
 /**
-* print_list - prints all elements of a list
-* @h: pointer to list node
-*
+* add_node - prints all elements of a list
+* @head: pointer to list node
+* @str: IDW
 * Return: Number of node of list
 */
-size_t print_list(const list_t *h)
-{
-	size_t n = 0;
-
-	while (h != NULL)
-	{
-		if (h->str != NULL)
-			printf("[%u] %s\n", h->len, h->str);
-		else
-			printf("[0] (nil)\n");
-		n++;
-		h = h->next;
-	}
-	return (n);
-}
 
 list_t *add_node(list_t **head, const char *str)
 {
