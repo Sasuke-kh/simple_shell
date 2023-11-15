@@ -15,20 +15,6 @@ void free_manager(void *ptr)
 	}
 }
 
-void free_av_memory(char **av, int ac)
-{
-    int i = 0;
-    for (i = 0; i < ac; i++)
-    {
-        free_and_NULL(&(av[i]));
-    }
-}
-
-void free_and_NULL(void **ptr)
-{	
-//	free(*ptr);
-//	*ptr = 0xFF;
-}
 void *_malloc(size_t size)
 {
 	void *ptr;

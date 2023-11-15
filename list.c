@@ -52,10 +52,9 @@ list_t *add_node(list_t **head, const char *str)
 
 	if (new_node == NULL)
 		return (NULL);
-	new_string = _strdup(str);
+	new_string = _strdup((char *)str);
 	if (new_string == NULL)
 	{
-		free(new_node);
 		return (NULL);
 	}
 	len = strlen(new_string);
@@ -83,10 +82,9 @@ list_t *add_node_end(list_t **head, const char *str)
 	new_node = (list_t *)_malloc(sizeof(list_t));
 	if (new_node == NULL)
 		return (NULL);
-	new_string = _strdup(str);
+	new_string = _strdup((char *)str);
 	if (new_string == NULL)
 	{
-		free(new_node);
 		return (NULL);
 	}
 	len = strlen(new_string);
@@ -105,23 +103,4 @@ list_t *add_node_end(list_t **head, const char *str)
 	}
 
 	return (new_node);
-}
-
-
-/**
-* free_list - frees memory ocuupied by single linked list
-* @head: pointer to head node of linked list
-*/
-void free_list(list_t *head)
-{
-	list_t *trav_node = head;
-	list_t *free_node = NULL;
-
-	while (trav_node != NULL)
-	{
-		free_node = trav_node;
-		trav_node = trav_node->next;
-		free_and_NULL(&(free_node->str));
-		free_and_NULL(&free_node);
-	}
 }

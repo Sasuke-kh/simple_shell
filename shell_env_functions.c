@@ -2,10 +2,18 @@
 #include "env.h"
 #include <stdio.h>
 
-int shell_env(char **av, int *ac)
+int shell_env(__attribute__ ((unused)) char **av, int *ac)
 {
-	print_env();
-	printf("Yeah that is me\n");
+	if (*ac == 1)
+	{
+		print_env();
+		return (0);
+	}
+	else
+	{
+		printf("Wrong number of arguments\n");
+		return (-1);
+	}
 
 }
 int shell_setenv(char **av, int *ac)
@@ -27,17 +35,17 @@ int shell_setenv(char **av, int *ac)
 int shell_unsetenv(char **av, int *ac)
 {
 	if(*ac != 2)
-    {
-        printf("Error wrong number of arguments\n");
-        return(-1);
-    }
-    else
-    {
-        if(_unsetenv(av[1]))
-        {
-            return (-2);
-        }
-    }
-    return (0);
+	{
+		printf("Error wrong number of arguments\n");
+		return(-1);
+	}
+	else
+	{
+		if(_unsetenv(av[1]))
+		{
+			return (-2);
+		}
+	}
+	return (0);
 }
 

@@ -8,49 +8,11 @@
 #include "main.h"
 #include <string.h>
 #include "memory_manager.h"
-int get_command(char **av, int *ac)
-{
-	char *line;
-	char *copy_line;
-	ssize_t size;
-	size_t n = 100;
-	char* token;
-	int i = 0;
-
-	line = (char *)_malloc(100);
-	if (line == NULL)
-		return (-1);
-	copy_line = line;
-	size = _getline(&line, &n, STDIN_FILENO);
-	if (size == -2)
-	{
-		free_and_NULL(copy_line);
-		return (-2);
-	}
-	if (line[size - 1] == '\n')
-		line[size - 1] = '\0';
-
-	token = _strtok(line, " ");
-	/*check if first token is alias replace it with equivelant */
-
-	while (token != NULL)
-	{
-		av[i] = _strdup(token);
-		token = _strtok(NULL, " ");
-		i++;
-	}
-	av[i] = NULL;	
-	*ac = i;
-	free_and_NULL(&line);
-//	free(token);
-	return (0);
-}
 
 
 int get_command_from_file(int fd, char **av, int *ac)
 {
 	char *line;
-	char *copy_line;
 	ssize_t size;
 	size_t n = 100;
 	char* token;
@@ -59,16 +21,16 @@ int get_command_from_file(int fd, char **av, int *ac)
 	line = (char *)_malloc(100);
 	if (line == NULL)
 		return (-1);
-	copy_line = line;
 	size = _getline(&line, &n, fd);
 	if (size == -2)
 	{
-		free_and_NULL(copy_line);
 		return (-2);
 	}
+	else if (size <= 0)
+		return (-1);
+
 	if (line[size - 1] == '\n')
 		line[size - 1] = '\0';
-
 	token = _strtok(line, " ");
 	/*check if first token is alias replace it with equivelant*/
 
@@ -80,8 +42,6 @@ int get_command_from_file(int fd, char **av, int *ac)
 	}
 	av[i] = NULL;
 	*ac = i;
-	free_and_NULL(&line);
-//	free(token);
 	return (0);
 }
 
@@ -98,7 +58,7 @@ int fork_and_execve(char **av, char **env)
 	{
 		if(execve(av[0], av, env) == -1)
 		{
-			perror("Error!!\n");
+			perror("Errorx!!\n");
 			return -2;
 		}
 	}
@@ -148,8 +108,6 @@ int get_PATH(char **env, list_t **paths_head)
 			token = _strtok(NULL, ":");
 			j++;
 		}
-		//free(token);
-		free_and_NULL(&copy_pathLine);
 	}
 	/*print_list(*paths_head);*/
 	return (0);
@@ -179,12 +137,10 @@ int is_found_and_excecutable(char **av, list_t *paths_head)
 		_strcat(testFile, av[0]);
 		if (access(testFile, X_OK) == 0)
 		{
-			free_and_NULL(&(av[0]));
 			av[0] = testFile;
 			return (0);
 		}
 		trav_path = trav_path->next;
-		free_and_NULL(&testFile);
 	}	
 	return (-1);
 }
