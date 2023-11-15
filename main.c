@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 	if (heap_environ())
 	{
 		print_error("ERROR Can't heap environ");
-		prnt_str("\n");
+		print_str("\n");
 		return (-7);
 	}
 	
