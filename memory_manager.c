@@ -11,7 +11,7 @@
 
 void free_manager(void *ptr)
 {
-	static listptr_t *headptr = NULL;
+	static listptr_t *headptr;
 
 	if (ptr != NULL)
 	{

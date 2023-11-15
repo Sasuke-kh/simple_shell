@@ -63,31 +63,20 @@ int _setenv(const char *name, const char *value, int overwrite)
 		else
 		{
 			i--;
-			new_name = _malloc(name_len + value_len + 2);    /* '=' + '\0'*/
-			if (new_name == NULL)
-				return (-1);
-			new_name[0] = '\0';
-			_strcat(new_name, (char *)name);
-			_strcat(new_name, "=");
-			_strcat(new_name, (char *)value);
-			environ[i] = new_name;
-			return (0);
 		}
+	}
+	new_name = _malloc(name_len + value_len + 2);    /* '=' + '\0'*/
+	if (new_name == NULL)
+		return (-1);
+	new_name[0] = '\0';
+	_strcat(new_name, (char *)name);
+	_strcat(new_name, "=");
+	_strcat(new_name, (char *)value);
+	environ[i] = new_name;
 
-	}
-	else
-	{
-		new_name = _malloc(name_len + value_len + 2);    /* '=' + '\0'*/
-		if (new_name == NULL)
-			return (-1);
-		new_name[0] = '\0';
-		_strcat(new_name, (char *)name);
-		_strcat(new_name, "=");
-		_strcat(new_name, (char *)value);
-		environ[i] = new_name;
+	if (result != 0)
 		environ[i + 1] = NULL;    /* append NULL to end*/
-		return (0);
-	}
+	return (0);
 }
 
 /**

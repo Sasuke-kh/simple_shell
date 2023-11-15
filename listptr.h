@@ -2,7 +2,7 @@
 #define _LISTPTR_H_
 #include <stddef.h>
 /**
- * struct listptr_s - singly linked list
+ * struct list_ptr - singly linked list
  * @ptr: string - (malloc'ed string)
  * @next: points to the next node
  *

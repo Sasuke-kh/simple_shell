@@ -11,7 +11,9 @@
 
 int is_built_in_commnad(char **av, int *ac, int *exit_status)
 {
-	command_t commands[NO_COMMANDS] = {{"cd", _cd}, {"exit", shell_exit}, {"env", shell_env}, {"setenv", shell_setenv }, {"unsetenv", shell_unsetenv}};
+	command_t commands[NO_COMMANDS] = {{"cd", _cd}, {"exit", shell_exit},
+		 {"env", shell_env}, {"setenv", shell_setenv },
+						 {"unsetenv", shell_unsetenv}};
 	int i = 0;
 	int result = -1;
 
