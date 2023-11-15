@@ -11,16 +11,16 @@ void print_str(char *str)
 {
 	int count;
 
-	for (count = 0; str[count] != '\0'; count ++)
+	for (count = 0; str[count] != '\0'; count++)
 	{
 		_putchar(str[count]);
 	}
 }
 
 /**
- * main - entry point
+ * _puterror - entry point
  *
- * Description: print _putchar
+ * @c: character
  *
  * Return: 0 (success)
  */
@@ -39,7 +39,7 @@ void print_error(char *str)
 {
 	int count;
 
-	for (count = 0; str[count] != '\0'; count ++)
+	for (count = 0; str[count] != '\0'; count++)
 	{
 		_puterror(str[count]);
 	}
