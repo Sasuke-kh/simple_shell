@@ -3,12 +3,17 @@
 #include "strings.h"
 
 extern char **environ;
-
 static int  copy_all_env(char **old_env, char **new_env);
+
+/**
+ * heap_environ - idk
+ * Return: idk
+ */
 
 int heap_environ(void)
 {
 	char **new_env = _malloc(ENV_SIZE * sizeof(char *));
+
 	if (!new_env)
 		return (-1);
 	/*copy all variabls from original environ variable*/
@@ -20,6 +25,12 @@ int heap_environ(void)
 	return (0);
 }
 
+/**
+ * copy_all_env - idk
+ * @old_env: idk
+ * @new_env: idk
+ * Return: ikd
+ */
 
 static int  copy_all_env(char **old_env, char **new_env)
 {
@@ -28,7 +39,7 @@ static int  copy_all_env(char **old_env, char **new_env)
 	while (old_env[i])
 	{
 		new_env[i] = _strdup(old_env[i]);
-		if(new_env[i] == NULL)
+		if (new_env[i] == NULL)
 			return (-1);
 		i++;
 	}
@@ -37,10 +48,15 @@ static int  copy_all_env(char **old_env, char **new_env)
 	return (0);
 }
 
+/**
+ * print_env - lik name
+ * Return: void
+ */
 
 void print_env(void)
 {
 	int i = 0;
+
 	while (environ[i])
 	{
 		printf("%s\n", environ[i]);
