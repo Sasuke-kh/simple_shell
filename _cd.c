@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "strings.h"
 #include "env.h"
+#include <string.h>
 
 int cd_home(const char *home);
 int change_ev(const char *current, char *current_directory);
@@ -18,80 +19,42 @@ int change_ev(const char *current, char *current_directory);
 int _cd(char **av, int *ac, __attribute__ ((unused)) int *exit_status)
 {
 	const char *home = _getenv("HOME");
-	const char *current = _getenv("PWD");
-	static char *prev;
-	char current_directory[1024];
-	char temp[1024];
+/*	const char *current = _getenv("PWD");*/
+/*	char current_directory[1024];*/
+	static char prev[1024];
+	char target[1024];
+	int len;
 
-	/*
-	 * if (prev == NULL)
-	*	prev = (char *)current;
-	*/
 	if (*ac == 1)
 	{
-		if (cd_home(home) == 0)
-		{
-			prev = (char *)current;
-			if (change_ev(current, current_directory) == 0)
-				return (0);
-			else
-				return (-1);
-		}
-		else
-			return (-1);
+		len = strlen(home);
+		memcpy(target, home, len);
+		target[len] = '\0';
 	}
-	if (_strcmp(av[1], "-") == 0)
+	else if (_strcmp(av[1], "-") == 0)
 	{
-		getcwd(temp, 1024);
-		if (chdir(prev) == 0)
-		{
-			prev = (char *)temp;
-			if (prev == (char *)temp)
-				printf("success\n");
-			if (change_ev(current, current_directory) == 0)
-			{
-				print_str(current_directory);
-				print_str("\n");
-				return (0);
-			}
-			else
-				return (-1);
-		}
-		else
-			return (-1);
-	}
-	if (_strcmp(av[1], "..") == 0)
-	{
-		if (chdir("..") == 0)
-		{
-			prev = (char *)current;
-			if (change_ev(current, current_directory) == 0)
-				return (0);
-			else
-				return (-1);
-		}
-		else
-			return (-1);
+
+		len = strlen(prev);
+		memcpy(target, prev, strlen(prev));
+		target[len] = '\0';
+
 	}
 	else
 	{
-		if (chdir(av[1]) == 0)
-		{
-			prev = (char *)current;
-			if (change_ev(current, current_directory) == 0)
-				return (0);
-			else
-				return (-1);
-		}
-		else
-		{
-			print_error("hsh: 2: cd: can't cd to ");
-			print_error(av[1]);
-			print_str("\n");
-			return (-1);
-		}
+		len = strlen(av[1]);
+		memcpy(target, av[1], strlen(av[1]));
+		target[len] = '\0';
+			
 	}
-	return (-1);
+
+	printf("prev before = %s\n", prev);
+	printf("target now = %s\n", target);
+	getcwd(prev, 1024);
+	printf("prev now = %s\n", prev);
+	chdir(target);
+
+
+	return (0);
 }
 
 /**
@@ -122,15 +85,15 @@ int cd_home(const char *home)
 
 int change_ev(const char *current, char *current_directory)
 {
-		if (getcwd(current_directory, 1024) != NULL)
+	if (getcwd(current_directory, 1024) != NULL)
+	{
+		if (_setenv(current, current_directory, 1) == 0)
 		{
-			if (_setenv(current, current_directory, 1) == 0)
-			{
-				return (0);
-			}
-			else
-				return (-1);
+			return (0);
 		}
 		else
 			return (-1);
+	}
+	else
+		return (-1);
 }
