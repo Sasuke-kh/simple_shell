@@ -1,9 +1,9 @@
 #include <stdio.h>
-
 #include <unistd.h>
 #include <stdlib.h>
 #include "strings.h"
 #include "env.h"
+
 int cd_home(const char *home);
 int change_ev(const char *current, char *current_directory);
 
@@ -21,6 +21,7 @@ int _cd(char **av, int *ac, __attribute__ ((unused)) int *exit_status)
 	const char *current = _getenv("PWD");
 	static char *prev;
 	char current_directory[1024];
+	char temp[1024];
 
 	/*
 	 * if (prev == NULL)
@@ -41,9 +42,12 @@ int _cd(char **av, int *ac, __attribute__ ((unused)) int *exit_status)
 	}
 	if (_strcmp(av[1], "-") == 0)
 	{
+		getcwd(temp, 1024);
 		if (chdir(prev) == 0)
 		{
-			prev = current_directory;
+			prev = (char *)temp;
+			if (prev == (char *)temp)
+				printf("success\n");
 			if (change_ev(current, current_directory) == 0)
 			{
 				print_str(current_directory);
