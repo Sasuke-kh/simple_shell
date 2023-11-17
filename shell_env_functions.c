@@ -11,7 +11,8 @@
  * Return: doc
  */
 
-int shell_env(__attribute__ ((unused)) char **av, int *ac, __attribute__ ((unused)) int *exit_status)
+int shell_env(__attribute__ ((unused)) char **av, int *ac,
+							 __attribute__ ((unused)) int *exit_status)
 {
 	if (*ac == 1)
 	{
@@ -63,7 +64,8 @@ int shell_setenv(char **av, int *ac, __attribute__ ((unused)) int *exit_status)
  * Return: doc
  */
 
-int shell_unsetenv(char **av, int *ac, __attribute__ ((unused)) int *exit_status)
+int shell_unsetenv(char **av, int *ac,
+				 __attribute__ ((unused)) int *exit_status)
 {
 	if (*ac != 2)
 	{

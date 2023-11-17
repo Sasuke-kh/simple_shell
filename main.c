@@ -66,10 +66,11 @@ int main(int argc, char **argv)
 		fd  = open(argv[1], O_RDONLY);
 		if (fd < 0)
 		{
+			print_error("./hsh: 0: ");
 			print_error("Can't open ");
 			print_error(argv[1]);
-			print_str("\n");
-			return (-4);
+			print_error("\n");
+			return (127);
 		}
 	}
 	else if (argc == 1)
